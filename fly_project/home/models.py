@@ -29,3 +29,19 @@ class Flight(models.Model):
 
     def __str__(self):
         return f"Flight {self.id} - {self.origin} to {self.destination}"
+
+class Passenger(models.Model):
+    DOCUMENT_TYPES = [
+        ("DNI", "DNI"),
+        ("PASSPORT", "Passport"),
+        ("OTHER", "Other"),
+    ]
+    name = models.CharField(max_length=100)
+    document = models.CharField(max_length=30, unique=True)
+    document_type = models.CharField(max_length=20, choices=DOCUMENT_TYPES)
+    email = models.EmailField()
+    phone = models.CharField(max_length=30)
+    birth_date = models.DateField()
+
+    def __str__(self):
+        return f"{self.name} ({self.document})"
