@@ -20,9 +20,39 @@
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="{% url 'index' %}">
-            <img src="{% static 'img/flight.png' %}" alt="Logo" style="height: 50px; width: auto;">
+            <img src="{% static 'img/flight.png' %}" style="height:32px; width:auto;">
         </a>
+        {% if user.is_authenticated %}
+        <li>
+            <a class="btn btn-primary" href="" class="custom"> Vuelos </a>
+        </li>
+        <li>
+            <a class="btn btn-primary" href=""> Mis vuelos </a>
+        </li>
+        <a class="btn btn-danger" href="{% url 'logout' %}"> Salir </a>
+        {% else %}
+        <a class="btn btn-primary" href="{% url 'login' %}"> Iniciar Sesion </a>
+        <a class="btn btn-secondary" href="{% url 'register' %}"> Registrarse </a>
+        {% endif %}
+
+        <form action="{% url 'set_language' %}" method="post">
+            {% csrf_token %}
+            <select name="language" id="" class="form-control" onchange="this.form.submit()">
+                <option value="es" {% if LANGUAGE_CODE == 'es' %} selected {% endif %}>ES</option>
+                <option value="en" {% if LANGUAGE_CODE == 'en' %} selected {% endif %}>EN</option>
+            </select>
+        </form>
     </nav>
+
+    {% if messages %}
+    {% for message in messages %}
+    {%if message.tags == 'error' %}
+    <div class="alert alert-danger">{{message}}</div>
+    {% else %}
+    <div class="alert alert-{{message.tags}}">{{message}}</div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
 
     {% block content %}{% endblock %}
     <!-- Optional JavaScript -->

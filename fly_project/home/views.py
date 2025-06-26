@@ -82,20 +82,20 @@ class LoginView(View):
             password = form.cleaned_data['password']
 
             user = authenticate(
-                request, 
-                username=username, 
+                request,
+                username=username,
                 password=password
             )
 
-            if user is not None: 
+            if user is not None:
                 login(request, user)
                 messages.success(request, "Sesion iniciada")
                 return redirect("index")
             else:
                 messages.error(request, "El usuario o contraseña no coinciden")
-                
+
         return render(
-            request, 
-            "accounts/login.html", 
+            request,
+            "accounts/login.html",
             {'form': form}
-        ) 
+        )
