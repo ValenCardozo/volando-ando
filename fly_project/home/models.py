@@ -45,3 +45,60 @@ class Passenger(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.document})"
+
+class Seat(models.Model):
+    SEAT_TYPES = [
+        ("economy", "Economy"),
+        ("premium", "Premium"),
+        ("business", "Business"),
+    ]
+    SEAT_STATUSES = [
+        ("available", "Available"),
+        ("reserved", "Reserved"),
+        ("occupied", "Occupied"),
+    ]
+    airplane = models.ForeignKey(Airplane, on_delete=models.CASCADE, related_name="seats")
+    number = models.CharField(max_length=10)
+    row = models.PositiveIntegerField()
+    column = models.PositiveIntegerField()
+    type = models.CharField(max_length=20, choices=SEAT_TYPES)
+    status = models.CharField(max_length=20, choices=SEAT_STATUSES, default="available")
+
+    class Meta:
+        unique_together = ("airplane", "number")
+
+    def __str__(self):
+        return f"Seat {self.number} ({self.type}) - {self.airplane.model}"
+
+class Reservation(models.Model):
+    STATUS_OPTIONS = [
+        ("pending", "Pending"),
+        ("confirmed", "Confirmed"),
+        ("canceled", "Canceled"),
+    ]
+    flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name="reservations")
+    passenger = models.ForeignKey(Passenger, on_delete=models.CASCADE, related_name="reservations")
+    seat = models.OneToOneField(Seat, on_delete=models.PROTECT, related_name="reservation")
+    status = models.CharField(max_length=20, choices=STATUS_OPTIONS, default="pending")
+    reservation_date = models.DateTimeField(auto_now_add=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    reservation_code = models.CharField(max_length=20, unique=True)
+
+    class Meta:
+        unique_together = ("flight", "passenger")
+
+    def __str__(self):
+        return f"Reservation {self.reservation_code} - Flight {self.flight.id} - {self.passenger.name}"
+
+class Ticket(models.Model):
+    STATUS_OPTIONS = [
+        ("issued", "Issued"),
+        ("canceled", "Canceled"),
+    ]
+    reservation = models.OneToOneField(Reservation, on_delete=models.CASCADE, related_name="ticket")
+    barcode = models.CharField(max_length=50, unique=True)
+    issue_date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=STATUS_OPTIONS, default="issued")
+
+    def __str__(self):
+        return f"Ticket {self.barcode} - Reservation {self.reservation.reservation_code}"
