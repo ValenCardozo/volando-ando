@@ -39,22 +39,6 @@ class RegisterView(View):
                 email=form.cleaned_data['email']
             )
 
-            subject = "Registro exitoso"
-            message = render_to_string(
-                'mails/welcome.html',
-                {'email':user.email}
-            )
-            email = EmailMessage(
-                subject=subject,
-                body=message,
-                from_email=settings.EMAIL_HOST_USER,
-                to=[user.email]
-            )
-            email.content_subtype = 'html'
-            email.send(
-                fail_silently=False
-            )
-
             messages.success(
                 request,
                 "Usuario registrado correctamente"

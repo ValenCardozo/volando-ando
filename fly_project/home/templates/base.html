@@ -9,39 +9,63 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/aeroplane_white.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/aeroplane_white.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/aeroplane_white.png' %}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" crossorigin="anonymous">
-
 </head>
 
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="{% url 'index' %}">
-            <img src="{% static 'img/flight.png' %}" style="height:32px; width:auto;">
+            <img src="{% static 'img/aeroplane_white.png' %}" style="height:32px; width:auto;">
         </a>
         {% if user.is_authenticated %}
-        <li>
-            <a class="btn btn-primary" href="" class="custom"> Vuelos </a>
-        </li>
-        <li>
-            <a class="btn btn-primary" href=""> Mis vuelos </a>
-        </li>
-        <a class="btn btn-danger" href="{% url 'logout' %}"> Salir </a>
+            <div class="d-flex align-items-center">
+                <a class="btn btn-primary mr-2" href="" class="custom">{% trans "Vuelos" %}</a>
+                <a class="btn btn-primary mr-3" href="">{% trans "Mis vuelos" %}</a>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user-circle mr-1"></i> {{ user.username }}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <h6 class="dropdown-header">{% trans "Idioma" %}</h6>
+                        <form action="{% url 'set_language' %}" method="post" class="px-3 py-1">
+                            {% csrf_token %}
+                            <div class="form-group mb-0">
+                                <select name="language" id="" class="form-control form-control-sm" onchange="this.form.submit()">
+                                    <option value="es" {% if LANGUAGE_CODE == 'es' %} selected {% endif %}>Español</option>
+                                    <option value="en" {% if LANGUAGE_CODE == 'en' %} selected {% endif %}>English</option>
+                                </select>
+                            </div>
+                        </form>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                            <i class="fas fa-sign-out-alt mr-1"></i> {% trans "Cerrar sesión" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
         {% else %}
-        <a class="btn btn-primary" href="{% url 'login' %}"> Iniciar Sesion </a>
-        <a class="btn btn-secondary" href="{% url 'register' %}"> Registrarse </a>
-        {% endif %}
+        <div class="d-flex align-items-center">
+            <a class="btn btn-primary mr-2" href="{% url 'login' %}"> Iniciar Sesion </a>
+            <a class="btn btn-secondary mr-3" href="{% url 'register' %}"> Registrarse </a>
 
-        <form action="{% url 'set_language' %}" method="post">
-            {% csrf_token %}
-            <select name="language" id="" class="form-control" onchange="this.form.submit()">
-                <option value="es" {% if LANGUAGE_CODE == 'es' %} selected {% endif %}>ES</option>
-                <option value="en" {% if LANGUAGE_CODE == 'en' %} selected {% endif %}>EN</option>
-            </select>
-        </form>
+            <form action="{% url 'set_language' %}" method="post" class="mb-0">
+                {% csrf_token %}
+                <select name="language" id="" class="form-control" onchange="this.form.submit()">
+                    <option value="es" {% if LANGUAGE_CODE == 'es' %} selected {% endif %}>ES</option>
+                    <option value="en" {% if LANGUAGE_CODE == 'en' %} selected {% endif %}>EN</option>
+                </select>
+            </form>
+        </div>
+        {% endif %}
     </nav>
 
     {% if messages %}
