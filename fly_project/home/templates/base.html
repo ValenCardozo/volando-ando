@@ -40,8 +40,8 @@
                             {% csrf_token %}
                             <div class="form-group mb-0">
                                 <select name="language" id="" class="form-control form-control-sm" onchange="this.form.submit()">
-                                    <option value="es" {% if LANGUAGE_CODE == 'es' %} selected {% endif %}>Español</option>
-                                    <option value="en" {% if LANGUAGE_CODE == 'en' %} selected {% endif %}>English</option>
+                                    <option value="es" {% if request.LANGUAGE_CODE == 'es' %} selected {% endif %}>Español</option>
+                                    <option value="en" {% if request.LANGUAGE_CODE == 'en' %} selected {% endif %}>English</option>
                                 </select>
                             </div>
                         </form>
