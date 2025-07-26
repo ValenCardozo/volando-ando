@@ -11,12 +11,12 @@ import string
 class ConfirmReservationView(View):
     def post(self, request, flight_id):
         flight = get_object_or_404(Flight, id=flight_id, status='scheduled')
-        # Buscar asiento disponible
+
         seat = flight.airplane.seats.filter(status='available').first()
         if not seat:
             messages.error(request, "No hay asientos disponibles para este vuelo.")
             return redirect('index')
-        # Buscar o crear pasajero para el usuario
+
         passenger, _ = Passenger.objects.get_or_create(
             email=request.user.email,
             defaults={
@@ -27,11 +27,11 @@ class ConfirmReservationView(View):
                 'birth_date': '2000-01-01',
             }
         )
-        # Verificar si ya existe una reserva para este pasajero y vuelo
+
         if Reservation.objects.filter(flight=flight, passenger=passenger).exists():
             messages.error(request, "Ya tienes una reserva para este vuelo.")
             return redirect('index')
-        # Mostrar pantalla de confirmación
+
         return render(request, 'confirm_reservation_prompt.html', {'flight': flight, 'seat': seat})
 
     def get(self, request, flight_id):
