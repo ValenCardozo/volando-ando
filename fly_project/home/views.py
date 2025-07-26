@@ -6,12 +6,44 @@ from django.core.mail import EmailMessage
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.views import View
-from home.forms import LoginForm, RegisterForm
+from home.forms import LoginForm, RegisterForm, FlightSearchForm
+from app.models import Flight, Reservation
+from .offers_view import OffersView
+from .buy_offer_view import BuyOfferView
+from .my_flights_view import MyFlightsView
+from .delete_reservation_view import DeleteReservationView
+from .confirm_reservation_views import ConfirmReservationView, FinalizeReservationView
 
 # Create your views here.
 class HomeView(View):
     def get(self, request):
-        return render(request, 'index.html')
+        form = FlightSearchForm(request.GET or None)
+        flights = None
+        user_reservations = []
+        if request.user.is_authenticated and request.GET:
+            if form.is_valid():
+                origin = form.cleaned_data['origin']
+                destination = form.cleaned_data['destination']
+                departure_date = form.cleaned_data['departure_date']
+                seat_class = form.cleaned_data['seat_class']
+                flights = Flight.objects.filter(
+                    origin=origin,
+                    destination=destination,
+                    departure_time__date=departure_date,
+                    status='scheduled',
+                )
+                if seat_class:
+                    flights = flights.filter(
+                        airplane__seats__type=seat_class,
+                        airplane__seats__status='available'
+                    ).distinct()
+                user_reservations = list(Reservation.objects.filter(
+                    passenger__email=request.user.email,
+                    flight__in=flights
+                ).values_list('flight_id', flat=True))
+        else:
+            form = FlightSearchForm()
+        return render(request, 'index.html', {'form': form, 'flights': flights, 'user_reservations': user_reservations})
 
 
 class LogoutView(View):

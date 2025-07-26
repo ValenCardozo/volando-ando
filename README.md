@@ -47,3 +47,13 @@ Sigue estos pasos para configurar el entorno de desarrollo local.
     ```
 
 6.  Abre tu navegador y ve a `http://127.0.0.1:8000/` para ver la aplicación en funcionamiento.
+
+## Cargar datos de seed en la base de datos
+
+Para que los demás integrantes puedan cargar los datos de ejemplo (seed) en la base de datos, simplemente ejecuten el siguiente comando desde la raíz del proyecto:
+
+```bash
+python3 fly_project/manage.py dbshell < seeds/seed_arg_airline.sql
+```
+
+Esto insertará los datos del archivo `seeds/seed_arg_airline.sql` en la base de datos SQLite utilizada por el proyecto.

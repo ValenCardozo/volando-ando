@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Ofertas de Vuelos - Volando Ando" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">{% trans "Ofertas de vuelos para los próximos 3 meses" %}</h3>
+                </div>
+                <div class="card-body">
+                    {% if offers %}
+                        <ul class="list-group list-group-flush">
+                        {% for flight in offers %}
+                            <li class="list-group-item mb-2">
+                                <strong>{% trans "Vuelo" %} {{ flight.id }}</strong>: {{ flight.origin }} → {{ flight.destination }}<br>
+                                <span class="text-muted">{{ flight.departure_time|date:'d/m/Y H:i' }} - {{ flight.arrival_time|date:'d/m/Y H:i' }}</span><br>
+                                <span class="badge bg-info text-dark">{{ flight.get_status_display }}</span>
+                                <span class="badge bg-success">${{ flight.base_price }}</span>
+                                {% if user.is_authenticated %}
+                                    {% if flight.id in user_reservations %}
+                                        <span class="badge badge-warning float-end">{% trans "Ya reservado" %}</span>
+                                    {% else %}
+                                        <form method="post" action="{% url 'buy_offer' flight.id %}" class="d-inline-block float-end ms-2">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-primary">{% trans "Comprar" %}</button>
+                                        </form>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="text-muted float-end">{% trans "Inicia sesión para comprar" %}</span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-danger mb-0">{% trans "No hay ofertas disponibles para los próximos 3 meses." %}</p>
+                    {% endif %}
+                    <div class="mt-4 text-center">
+                        <a href="/" class="btn btn-outline-primary">{% trans "Volver al inicio" %}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

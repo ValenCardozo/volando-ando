@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Mis Vuelos - Volando Ando" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">{% trans "Mis Reservas de Vuelo" %}</h3>
+                </div>
+                <div class="card-body">
+                    {% if reservations %}
+                        <ul class="list-group list-group-flush">
+                        {% for r in reservations %}
+                            {% if r.flight.departure_time < now %}
+                                <li class="list-group-item mb-2 bg-light text-muted">
+                                    <strong>{% trans "Vuelo" %} {{ r.flight.id }}</strong>: {{ r.flight.origin }} → {{ r.flight.destination }}<br>
+                                    <span class="text-muted">{{ r.flight.departure_time|date:'d/m/Y H:i' }} - {{ r.flight.arrival_time|date:'d/m/Y H:i' }}</span><br>
+                                    <span class="badge badge-secondary">{% trans "Caducado" %}</span>
+                                    <span class="badge bg-info text-dark">{{ r.flight.get_status_display }}</span>
+                                    <span class="badge bg-success">${{ r.price }}</span>
+                                    <span class="badge bg-secondary">{% trans "Asiento" %}: {{ r.seat.number }}</span>
+                                    <span class="badge bg-dark text-muted">{% trans "Código" %}: {{ r.reservation_code }}</span>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item mb-2">
+                                    <strong>{% trans "Vuelo" %} {{ r.flight.id }}</strong>: {{ r.flight.origin }} → {{ r.flight.destination }}<br>
+                                    <span class="text-muted">{{ r.flight.departure_time|date:'d/m/Y H:i' }} - {{ r.flight.arrival_time|date:'d/m/Y H:i' }}</span><br>
+                                    <span class="badge bg-info text-dark">{{ r.flight.get_status_display }}</span>
+                                    <span class="badge bg-success">${{ r.price }}</span>
+                                    <span class="badge bg-secondary">{% trans "Asiento" %}: {{ r.seat.number }}</span>
+                                    <span class="badge bg-dark text-muted">{% trans "Código" %}: {{ r.reservation_code }}</span>
+                                    <form method="post" action="{% url 'delete_reservation' r.id %}" class="d-inline-block float-end ms-2">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-danger">{% trans "Eliminar" %}</button>
+                                    </form>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-danger mb-0">{% trans "No tienes reservas de vuelos." %}</p>
+                    {% endif %}
+                    <div class="mt-4 text-center">
+                        <a href="/" class="btn btn-outline-primary">{% trans "Volver al inicio" %}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

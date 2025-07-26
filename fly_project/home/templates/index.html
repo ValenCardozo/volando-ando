@@ -49,77 +49,14 @@
         </div>
     </div>
     
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">{% trans "Buscar Vuelos" %}</h4>
-                </div>
-                <div class="card-body">
-                    <form class="row" method="get" action="">
-                        <div class="col-md-4 mb-3">
-                            <label for="origin">{% trans "Origen" %}</label>
-                            <input type="text" class="form-control" id="origin" name="origin" placeholder="{% trans 'Ciudad de origen' %}" required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="destination">{% trans "Destino" %}</label>
-                            <input type="text" class="form-control" id="destination" name="destination" placeholder="{% trans 'Ciudad de destino' %}" required>
-                        </div>
-                        
-                        <div class="col-md-4 mb-3">
-                            <label class="d-block">{% trans "Tipo de viaje" %}</label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="trip_type" id="roundtrip" value="roundtrip" checked>
-                                <label class="form-check-label" for="roundtrip">{% trans "Ida y vuelta" %}</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="trip_type" id="oneway" value="oneway">
-                                <label class="form-check-label" for="oneway">{% trans "Solo ida" %}</label>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-3 mb-3">
-                            <label for="departure_date">{% trans "Fecha de ida" %}</label>
-                            <input type="date" class="form-control" id="departure_date" name="departure_date" required>
-                        </div>
-                        <div class="col-md-3 mb-3" id="return_date_container">
-                            <label for="return_date">{% trans "Fecha de vuelta" %}</label>
-                            <input type="date" class="form-control" id="return_date" name="return_date">
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label for="passengers">{% trans "Pasajeros" %}</label>
-                            <select class="form-control" id="passengers" name="passengers">
-                                {% for i in '123456'|make_list %}
-                                <option value="{{ i }}">{{ i }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label for="class">{% trans "Clase" %}</label>
-                            <select class="form-control" id="class" name="class">
-                                <option value="economy">{% trans "Económica" %}</option>
-                                <option value="premium">{% trans "Premium" %}</option>
-                                <option value="business">{% trans "Business" %}</option>
-                            </select>
-                        </div>
-                        
-                        <div class="col-12 text-center mt-2">
-                            <button type="submit" class="btn btn-primary btn-lg">{% trans "Buscar Vuelos" %}</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    
     <div class="row">
         <div class="col-md-4 mb-3">
             <div class="card shadow-sm h-100">
                 <div class="card-body text-center">
                     <i class="fas fa-ticket-alt fa-3x text-primary mb-3"></i>
-                    <h4>{% trans "Mis Vuelos" %}</h4>
+                    <h4  href="{% url 'my_flights' %}">{% trans "Mis Vuelos" %}</h4>
                     <p>{% trans "Accede a tus reservas y tickets" %}</p>
-                    <a href="" class="btn btn-outline-primary">{% trans "Ver Mis Vuelos" %}</a>
+                    <a href="{% url 'my_flights' %}" class="btn btn-outline-primary">{% trans "Ver Mis Vuelos" %}</a>
                 </div>
             </div>
         </div>
@@ -139,12 +76,96 @@
                     <i class="fas fa-percentage fa-3x text-primary mb-3"></i>
                     <h4>{% trans "Ofertas Especiales" %}</h4>
                     <p>{% trans "No te pierdas nuestras mejores promociones" %}</p>
-                    <a href="" class="btn btn-outline-primary">{% trans "Ver Ofertas" %}</a>
+                    <a href="{% url 'offers' %}" class="btn btn-outline-primary">{% trans "Ver Ofertas" %}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4 mt-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "Buscar Vuelos" %}</h4>
+                </div>
+                <div class="card-body">
+                    <form class="row" method="get" action="">
+                        <div class="col-md-4 mb-3">
+                            <label for="id_origin">{% trans "Origen" %}</label>
+                            {{ form.origin }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="id_destination">{% trans "Destino" %}</label>
+                            {{ form.destination }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="d-block">{% trans "Tipo de viaje" %}</label>
+                            {{ form.trip_type }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="id_departure_date">{% trans "Fecha de ida" %}</label>
+                            {{ form.departure_date }}
+                        </div>
+                        <div class="col-md-3 mb-3" id="return_date_container">
+                            <label for="id_return_date">{% trans "Fecha de vuelta" %}</label>
+                            {{ form.return_date }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="id_passengers">{% trans "Pasajeros" %}</label>
+                            {{ form.passengers }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="id_seat_class">{% trans "Clase" %}</label>
+                            {{ form.seat_class }}
+                        </div>
+                        <div class="col-12 text-center mt-2">
+                            <button type="submit" class="btn btn-primary btn-lg">{% trans "Buscar Vuelos" %}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if flights is not None %}
+    <div class="row justify-content-center mt-4 mb-5">
+        <div class="col-lg-8">
+            <div class="card border-primary shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">{% trans "Resultados de la búsqueda" %}</h5>
+                </div>
+                <div class="card-body">
+                    {% if flights %}
+                        <ul class="list-group list-group-flush">
+                        {% for flight in flights %}
+                            <li class="list-group-item mb-2">
+                                <strong>{% trans "Vuelo" %} {{ flight.id }}</strong>: {{ flight.origin }} → {{ flight.destination }}<br>
+                                <span class="text-muted">{{ flight.departure_time|date:'d/m/Y H:i' }} - {{ flight.arrival_time|date:'d/m/Y H:i' }}</span><br>
+                                <span class="badge bg-info text-dark">{{ flight.get_status_display }}</span>
+                                <span class="badge bg-success">${{ flight.base_price }}</span>
+                                {% if user.is_authenticated %}
+                                    {% if flight.id in user_reservations %}
+                                        <span class="badge badge-warning float-end">{% trans "Ya reservado" %}</span>
+                                    {% else %}
+                                        <form method="post" action="{% url 'confirm_reservation_prompt' flight.id %}" class="d-inline-block float-end ms-2">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-primary">{% trans "Reservar" %}</button>
+                                        </form>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="text-muted float-end">{% trans "Inicia sesión para reservar" %}</span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-danger mb-0">{% trans "No se encontraron vuelos para los criterios seleccionados." %}</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
     {% endif %}
+{% endif %}
 </div>
 
 <script>

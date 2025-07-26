@@ -70,3 +70,42 @@ class LoginForm(forms.Form):
             }
         )
     )
+
+CITY_CHOICES = [
+    ("AEP", "Buenos Aires (Aeroparque)"),
+    ("EZE", "Buenos Aires (Ezeiza)"),
+    ("COR", "Córdoba"),
+    ("MDZ", "Mendoza"),
+    ("BRC", "Bariloche"),
+    ("USH", "Ushuaia"),
+    ("IGR", "Puerto Iguazú"),
+    ("NQN", "Neuquén"),
+]
+
+CITY_SYNONYMS = {
+    "aeroparque": "AEP",
+    "buenos aires (aeroparque)": "AEP",
+    "buenos aires": "AEP",
+    "ezeiza": "EZE",
+    "cordoba": "COR",
+    "córdoba": "COR",
+    "mendoza": "MDZ",
+    "bariloche": "BRC",
+    "san carlos de bariloche": "BRC",
+    "ushuaia": "USH",
+    "iguazu": "IGR",
+    "iguazú": "IGR",
+    "puerto iguazu": "IGR",
+    "puerto iguazú": "IGR",
+    "neuquen": "NQN",
+    "neuquén": "NQN",
+}
+
+class FlightSearchForm(forms.Form):
+    origin = forms.ChoiceField(choices=CITY_CHOICES, label="Origen", widget=forms.Select(attrs={'class': 'form-control'}))
+    destination = forms.ChoiceField(choices=CITY_CHOICES, label="Destino", widget=forms.Select(attrs={'class': 'form-control'}))
+    departure_date = forms.DateField(label="Fecha de ida", widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}))
+    return_date = forms.DateField(label="Fecha de vuelta", required=False, widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}))
+    trip_type = forms.ChoiceField(choices=[('roundtrip', 'Ida y vuelta'), ('oneway', 'Solo ida')], widget=forms.RadioSelect)
+    passengers = forms.IntegerField(min_value=1, max_value=6, label="Pasajeros", widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    seat_class = forms.ChoiceField(choices=[('economy', 'Económica'), ('premium', 'Premium'), ('business', 'Business')], label="Clase", widget=forms.Select(attrs={'class': 'form-control'}))

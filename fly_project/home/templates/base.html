@@ -28,8 +28,8 @@
         </a>
         {% if user.is_authenticated %}
             <div class="d-flex align-items-center">
-                <a class="btn btn-primary mr-2" href="" class="custom">{% trans "Vuelos" %}</a>
-                <a class="btn btn-primary mr-3" href="">{% trans "Mis vuelos" %}</a>
+                <a class="btn btn-primary mr-2" href="/" class="custom">{% trans "Vuelos" %}</a>
+                <a class="btn btn-primary mr-3" href="{% url 'my_flights' %}">{% trans "Mis vuelos" %}</a>
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user-circle mr-1"></i> {{ user.username }}
