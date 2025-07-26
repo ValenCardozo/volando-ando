@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Confirmar Reserva - Volando Ando" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-primary shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">{% trans "¿Confirmar reserva de vuelo?" %}</h3>
+                </div>
+                <div class="card-body text-center">
+                    <p class="lead">{% trans "¿Deseas reservar el siguiente vuelo?" %}</p>
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item"><strong>{% trans "Vuelo" %}:</strong> {{ flight.origin }} → {{ flight.destination }}</li>
+                        <li class="list-group-item"><strong>{% trans "Fecha y hora de salida" %}:</strong> {{ flight.departure_time|date:'d/m/Y H:i' }}</li>
+                        <li class="list-group-item"><strong>{% trans "Precio" %}:</strong> ${{ flight.base_price }}</li>
+                        <li class="list-group-item"><strong>{% trans "Asiento sugerido" %}:</strong> {{ seat.number }}</li>
+                    </ul>
+                    <form method="post" action="{% url 'finalize_reservation' flight.id %}" class="d-inline-block">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-lg mr-2">{% trans "Sí, reservar" %}</button>
+                    </form>
+                    <a href="/" class="btn btn-outline-secondary btn-lg">{% trans "No, volver" %}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

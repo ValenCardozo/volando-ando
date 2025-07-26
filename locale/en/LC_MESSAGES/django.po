@@ -1,0 +1,426 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-26 16:55-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: fly_project/home/templates/base.html:31
+msgid "Vuelos"
+msgstr "Flights"
+
+#: fly_project/home/templates/base.html:32
+msgid "Mis vuelos"
+msgstr "My flights"
+
+#: fly_project/home/templates/base.html:38
+msgid "Idioma"
+msgstr "Language"
+
+#: fly_project/home/templates/base.html:50
+msgid "Cerrar sesión"
+msgstr "Log out"
+
+#: fly_project/home/templates/confirm_reservation.html:4
+msgid "Confirmación de Reserva - Volando Ando"
+msgstr "Reservation Confirmation – Volando Ando"
+
+#: fly_project/home/templates/confirm_reservation.html:12
+msgid "¡Reserva realizada con éxito!"
+msgstr "Booking successful!"
+
+#: fly_project/home/templates/confirm_reservation.html:15
+msgid "Tu reserva ha sido confirmada."
+msgstr "Your reservation has been confirmed."
+
+#: fly_project/home/templates/confirm_reservation.html:17
+#: fly_project/home/templates/confirm_reservation_prompt.html:17
+#: fly_project/home/templates/index.html:141
+#: fly_project/home/templates/my_flights.html:20
+#: fly_project/home/templates/my_flights.html:30
+#: fly_project/home/templates/offers.html:19
+msgid "Vuelo"
+msgstr "Flight"
+
+#: fly_project/home/templates/confirm_reservation.html:18
+#: fly_project/home/templates/confirm_reservation_prompt.html:18
+msgid "Fecha y hora de salida"
+msgstr "Departure date and time"
+
+#: fly_project/home/templates/confirm_reservation.html:19
+#: fly_project/home/templates/my_flights.html:25
+#: fly_project/home/templates/my_flights.html:34
+msgid "Asiento"
+msgstr "Seat"
+
+#: fly_project/home/templates/confirm_reservation.html:20
+msgid "Código de reserva"
+msgstr "Reservation code"
+
+#: fly_project/home/templates/confirm_reservation.html:21
+#: fly_project/home/templates/confirm_reservation_prompt.html:19
+msgid "Precio"
+msgstr "Price"
+
+#: fly_project/home/templates/confirm_reservation.html:23
+#: fly_project/home/templates/index.html:59
+msgid "Ver Mis Vuelos"
+msgstr "View My Flights"
+
+#: fly_project/home/templates/confirm_reservation.html:24
+#: fly_project/home/templates/my_flights.html:48
+#: fly_project/home/templates/offers.html:42
+msgid "Volver al inicio"
+msgstr "Return to home"
+
+#: fly_project/home/templates/confirm_reservation_prompt.html:4
+msgid "Confirmar Reserva - Volando Ando"
+msgstr "Confirm Reservation – Volando Ando"
+
+#: fly_project/home/templates/confirm_reservation_prompt.html:12
+msgid "¿Confirmar reserva de vuelo?"
+msgstr "Confirm flight reservation?"
+
+#: fly_project/home/templates/confirm_reservation_prompt.html:15
+msgid "¿Deseas reservar el siguiente vuelo?"
+msgstr "Do you want to book the following flight?"
+
+#: fly_project/home/templates/confirm_reservation_prompt.html:20
+msgid "Asiento sugerido"
+msgstr "Suggested seat"
+
+#: fly_project/home/templates/confirm_reservation_prompt.html:24
+msgid "Sí, reservar"
+msgstr "Yes, book"
+
+#: fly_project/home/templates/confirm_reservation_prompt.html:26
+msgid "No, volver"
+msgstr "No, go back"
+
+#: fly_project/home/templates/index.html:5
+msgid "Volando Ando - Reserva tu vuelo"
+msgstr "Volando Ando – Book your flight"
+
+#: fly_project/home/templates/index.html:11
+msgid "Bienvenido a Volando Ando"
+msgstr "Welcome to Volando Ando"
+
+#: fly_project/home/templates/index.html:12
+msgid ""
+"Tu plataforma para encontrar y reservar los mejores vuelos a los precios más "
+"competitivos."
+msgstr ""
+"Your platform to find and book the best flights at the most competitive prices."
+
+#: fly_project/home/templates/index.html:18
+msgid "¿Qué ofrecemos?"
+msgstr "What do we offer?"
+
+#: fly_project/home/templates/index.html:20
+msgid "Amplia selección de vuelos nacionales e internacionales"
+msgstr "Wide range of domestic and international flights"
+
+#: fly_project/home/templates/index.html:21
+msgid "Precios competitivos y ofertas exclusivas"
+msgstr "Competitive prices and exclusive offers"
+
+#: fly_project/home/templates/index.html:22
+msgid "Reservas rápidas y seguras"
+msgstr "Quick and secure bookings"
+
+#: fly_project/home/templates/index.html:23
+msgid "Mejor servicio al cliente"
+msgstr "Best customer service"
+
+#: fly_project/home/templates/index.html:31
+msgid "Comienza ahora mismo"
+msgstr "Start right now"
+
+#: fly_project/home/templates/index.html:32
+msgid ""
+"Crea una cuenta o inicia sesión para acceder a todas las funcionalidades:"
+msgstr ""
+"Create an account or log in to access all features:"
+
+#: fly_project/home/templates/index.html:34
+msgid "Iniciar Sesión"
+msgstr "Log In"
+
+#: fly_project/home/templates/index.html:35
+msgid "Registrarse"
+msgstr "Register"
+
+#: fly_project/home/templates/index.html:46
+msgid "¡Hola"
+msgstr "Hello"
+
+#: fly_project/home/templates/index.html:47
+msgid "¿A dónde te gustaría viajar hoy?"
+msgstr "Where would you like to travel today?"
+
+#: fly_project/home/templates/index.html:57
+msgid "Mis Vuelos"
+msgstr "My Flights"
+
+#: fly_project/home/templates/index.html:58
+msgid "Accede a tus reservas y tickets"
+msgstr "Access your bookings and tickets"
+
+#: fly_project/home/templates/index.html:67
+msgid "Destinos Populares"
+msgstr "Popular Destinations"
+
+#: fly_project/home/templates/index.html:68
+msgid "Descubre nuevos lugares para visitar"
+msgstr "Discover new places to visit"
+
+#: fly_project/home/templates/index.html:69
+msgid "Explorar Destinos"
+msgstr "Explore Destinations"
+
+#: fly_project/home/templates/index.html:77
+msgid "Ofertas Especiales"
+msgstr "Special Offers"
+
+#: fly_project/home/templates/index.html:78
+msgid "No te pierdas nuestras mejores promociones"
+msgstr "Don't miss our best promotions"
+
+#: fly_project/home/templates/index.html:79
+msgid "Ver Ofertas"
+msgstr "View Offers"
+
+#: fly_project/home/templates/index.html:89
+#: fly_project/home/templates/index.html:122
+msgid "Buscar Vuelos"
+msgstr "Search Flights"
+
+#: fly_project/home/templates/index.html:94
+msgid "Origen"
+msgstr "Origin"
+
+#: fly_project/home/templates/index.html:98
+msgid "Destino"
+msgstr "Destination"
+
+#: fly_project/home/templates/index.html:102
+msgid "Tipo de viaje"
+msgstr "Type of trip"
+
+#: fly_project/home/templates/index.html:106
+msgid "Fecha de ida"
+msgstr "Departure date"
+
+#: fly_project/home/templates/index.html:110
+msgid "Fecha de vuelta"
+msgstr "Return date"
+
+#: fly_project/home/templates/index.html:114
+msgid "Pasajeros"
+msgstr "Passengers"
+
+#: fly_project/home/templates/index.html:118
+msgid "Clase"
+msgstr "Class"
+
+#: fly_project/home/templates/index.html:134
+msgid "Resultados de la búsqueda"
+msgstr "Search Results"
+
+#: fly_project/home/templates/index.html:147
+#: fly_project/home/templates/offers.html:25
+msgid "Ya reservado"
+msgstr "Already booked"
+
+#: fly_project/home/templates/index.html:151
+msgid "Reservar"
+msgstr "Book"
+
+#: fly_project/home/templates/index.html:155
+msgid "Inicia sesión para reservar"
+msgstr "Log in to book"
+
+#: fly_project/home/templates/index.html:161
+msgid "No se encontraron vuelos para los criterios seleccionados."
+msgstr "No flights found for the selected criteria."
+
+#: fly_project/home/templates/my_flights.html:4
+msgid "Mis Vuelos - Volando Ando"
+msgstr "My Flights – Volando Ando"
+
+#: fly_project/home/templates/my_flights.html:12
+msgid "Mis Reservas de Vuelo"
+msgstr "My Flight Bookings"
+
+#: fly_project/home/templates/my_flights.html:22
+msgid "Caducado"
+msgstr "Expired"
+
+#: fly_project/home/templates/my_flights.html:26
+#: fly_project/home/templates/my_flights.html:35
+msgid "Código"
+msgstr "Code"
+
+#: fly_project/home/templates/my_flights.html:38
+msgid "Eliminar"
+msgstr "Delete"
+
+#: fly_project/home/templates/my_flights.html:45
+msgid "No tienes reservas de vuelos."
+msgstr "You have no flight bookings."
+
+#: fly_project/home/templates/offers.html:4
+msgid "Ofertas de Vuelos - Volando Ando"
+msgstr "Flight Offers – Volando Ando"
+
+#: fly_project/home/templates/offers.html:12
+msgid "Ofertas de vuelos para los próximos 3 meses"
+msgstr "Flight offers for the next 3 months"
+
+#: fly_project/home/templates/offers.html:29
+msgid "Comprar"
+msgstr "Buy"
+
+#: fly_project/home/templates/offers.html:33
+msgid "Inicia sesión para comprar"
+msgstr "Log in to buy"
+
+#: fly_project/home/templates/offers.html:39
+msgid "No hay ofertas disponibles para los próximos 3 meses."
+msgstr "No offers available for the next 3 months."
+
+# Django core messages – where the translation is identical.
+
+#: venv/lib/python3.11/site-packages/django/contrib/messages/apps.py:16
+msgid "Messages"
+msgstr "Messages"
+
+#: venv/lib/python3.11/site-packages/django/contrib/sitemaps/apps.py:8
+msgid "Site Maps"
+msgstr "Site Maps"
+
+#: venv/lib/python3.11/site-packages/django/contrib/staticfiles/apps.py:9
+msgid "Static Files"
+msgstr "Static Files"
+
+#: venv/lib/python3.11/site-packages/django/contrib/syndication/apps.py:7
+msgid "Syndication"
+msgstr "Syndication"
+
+#. Translators: String used to replace omitted page numbers in elided page
+#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: venv/lib/python3.11/site-packages/django/core/paginator.py:30
+msgid "…"
+msgstr "…"
+
+#: venv/lib/python3.11/site-packages/django/core/paginator.py:32
+msgid "That page number is not an integer"
+msgstr "That page number is not an integer"
+
+#: venv/lib/python3.11/site-packages/django/core/paginator.py:33
+msgid "That page number is less than 1"
+msgstr "That page number is less than 1"
+
+#: venv/lib/python3.11/site-packages/django/core/paginator.py:34
+msgid "That page contains no results"
+msgstr "That page contains no results"
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:22
+msgid "Enter a valid value."
+msgstr "Enter a valid value."
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:70
+msgid "Enter a valid domain name."
+msgstr "Enter a valid domain name."
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:153
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:775
+msgid "Enter a valid URL."
+msgstr "Enter a valid URL."
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:200
+msgid "Enter a valid integer."
+msgstr "Enter a valid integer."
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:211
+msgid "Enter a valid email address."
+msgstr "Enter a valid email address."
+
+#. Translators: “letters” means latin letters: a-z and A-Z.
+#: venv/lib/python3.11/site-packages/django/core/validators.py:289
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgstr "Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:297
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
+"hyphens."
+msgstr "Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or hyphens."
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:309
+#: venv/lib/python3.11/site-packages/django/core/validators.py:318
+#: venv/lib/python3.11/site-packages/django/core/validators.py:332
+#: venv/lib/python3.11/site-packages/django/db/models/fields/__init__.py:2220
+#, python-format
+msgid "Enter a valid %(protocol)s address."
+msgstr "Enter a valid %(protocol)s address."
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:311
+msgid "IPv4"
+msgstr "IPv4"
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:320
+#: venv/lib/python3.11/site-packages/django/utils/ipv6.py:43
+msgid "IPv6"
+msgstr "IPv6"
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:334
+msgid "IPv4 or IPv6"
+msgstr "IPv4 or IPv6"
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:375
+msgid "Enter only digits separated by commas."
+msgstr "Enter only digits separated by commas."
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:381
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:416
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr "Ensure this value is less than or equal to %(limit_value)s."
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:425
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr "Ensure this value is greater than or equal to %(limit_value)s."
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:434
+#, python-format
+msgid "Ensure this value is a multiple of step size %(limit_value)s."
+msgstr "Ensure this value is a multiple of step size %(limit_value)s."
+
+#: venv/lib/python3.11/site-packages/django/core/validators.py:441
+#, python-format
+msgid ""
+"Ensure this value is a multiple of step size %(limit_value)s, starting from "
+"%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
+msgstr ""
+"Ensure this value is a multiple of step size %(limit_value)s, starting from %(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
+

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Confirmación de Reserva - Volando Ando" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-success shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">{% trans "¡Reserva realizada con éxito!" %}</h3>
+                </div>
+                <div class="card-body text-center">
+                    <p class="lead">{% trans "Tu reserva ha sido confirmada." %}</p>
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item"><strong>{% trans "Vuelo" %}:</strong> {{ reservation.flight.origin }} → {{ reservation.flight.destination }}</li>
+                        <li class="list-group-item"><strong>{% trans "Fecha y hora de salida" %}:</strong> {{ reservation.flight.departure_time|date:'d/m/Y H:i' }}</li>
+                        <li class="list-group-item"><strong>{% trans "Asiento" %}:</strong> {{ reservation.seat.number }}</li>
+                        <li class="list-group-item"><strong>{% trans "Código de reserva" %}:</strong> {{ reservation.reservation_code }}</li>
+                        <li class="list-group-item"><strong>{% trans "Precio" %}:</strong> ${{ reservation.price }}</li>
+                    </ul>
+                    <a href="{% url 'my_flights' %}" class="btn btn-primary">{% trans "Ver Mis Vuelos" %}</a>
+                    <a href="/" class="btn btn-outline-primary ms-2">{% trans "Volver al inicio" %}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
