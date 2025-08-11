@@ -1,0 +1,231 @@
+{% extends 'backoffice/base_backoffice.html' %}
+
+{% block title %}Estadísticas de Vuelos{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Estadísticas de Vuelos</h1>
+        <div>
+            <a href="{% url 'backoffice:reservation_statistics' %}" class="btn btn-info">
+                <i class="fas fa-exchange-alt mr-2"></i> Ver Estadísticas de Reservas
+            </a>
+            <a href="{% url 'backoffice:dashboard' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left mr-2"></i> Volver al Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total de Vuelos</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_flights }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-plane fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Vuelos Programados</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ scheduled_flights }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Vuelos Completados</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ completed_flights }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                Vuelos Cancelados</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ canceled_flights }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-times-circle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Distribución de Estados de Vuelos</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-pie pt-4">
+                        <canvas id="flightStatusChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-info"></i> Programados
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-primary"></i> En vuelo
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-success"></i> Completados
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-danger"></i> Cancelados
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Rutas Más Populares</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Origen</th>
+                                    <th>Destino</th>
+                                    <th>Cantidad de Vuelos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Aquí se mostrarían datos reales -->
+                                <tr>
+                                    <td>Buenos Aires</td>
+                                    <td>Madrid</td>
+                                    <td>15</td>
+                                </tr>
+                                <tr>
+                                    <td>Buenos Aires</td>
+                                    <td>Miami</td>
+                                    <td>12</td>
+                                </tr>
+                                <tr>
+                                    <td>Córdoba</td>
+                                    <td>Buenos Aires</td>
+                                    <td>10</td>
+                                </tr>
+                                <tr>
+                                    <td>Buenos Aires</td>
+                                    <td>Santiago</td>
+                                    <td>8</td>
+                                </tr>
+                                <tr>
+                                    <td>Mendoza</td>
+                                    <td>Buenos Aires</td>
+                                    <td>7</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Próximos Vuelos</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="upcomingFlightsTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Origen</th>
+                            <th>Destino</th>
+                            <th>Salida</th>
+                            <th>Avión</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aquí se mostrarían datos reales -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Configuración del gráfico de estados de vuelos
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('flightStatusChart').getContext('2d');
+        var flightStatusChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Programados', 'En vuelo', 'Completados', 'Cancelados'],
+                datasets: [{
+                    data: [{{ scheduled_flights }}, {{ in_flight_flights|default:0 }}, {{ completed_flights }}, {{ canceled_flights }}],
+                    backgroundColor: ['#36b9cc', '#4e73df', '#1cc88a', '#e74a3b'],
+                    hoverBackgroundColor: ['#2c9faf', '#2e59d9', '#17a673', '#be2617'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'backoffice/base_backoffice.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Panel de Control</h1>
+    
+    <div class="row">
+        <!-- Tarjeta de Vuelos -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-left-primary shadow h-100">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Vuelos</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ flights_count }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-plane fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'backoffice:flight_list' %}" class="btn btn-primary btn-sm btn-block">
+                        Ver todos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Aviones -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-left-success shadow h-100">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Aviones</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ airplanes_count }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-plane-departure fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'backoffice:airplane_list' %}" class="btn btn-success btn-sm btn-block">
+                        Ver todos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Reservas -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-left-info shadow h-100">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Reservas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ reservations_count }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'backoffice:flight_statistics' %}" class="btn btn-info btn-sm btn-block">
+                        Ver estadísticas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Acciones Rápidas</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <a href="{% url 'backoffice:flight_create' %}" class="btn btn-primary btn-block">
+                                <i class="fas fa-plus mr-2"></i> Nuevo Vuelo
+                            </a>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <a href="{% url 'backoffice:airplane_create' %}" class="btn btn-success btn-block">
+                                <i class="fas fa-plus mr-2"></i> Nuevo Avión
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Información del Sistema</h6>
+                </div>
+                <div class="card-body">
+                    <p>Bienvenido al panel de administración de Volando Ando.</p>
+                    <p>Desde aquí puede gestionar vuelos, aviones, asientos y ver estadísticas del sistema.</p>
+                    <p>Use la barra lateral para navegar entre las diferentes secciones.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

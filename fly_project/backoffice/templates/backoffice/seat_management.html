@@ -1,0 +1,174 @@
+{% extends 'backoffice/base_backoffice.html' %}
+
+{% block title %}Gestión de Asientos{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Gestión de Asientos: {{ airplane.model }}</h1>
+        <div>
+            <a href="{% url 'backoffice:generate_seats' airplane.id %}" class="btn btn-primary">
+                <i class="fas fa-sync mr-2"></i> Generar Layout
+            </a>
+            <a href="{% url 'backoffice:airplane_detail' airplane.id %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left mr-2"></i> Volver al avión
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Layout de Asientos</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="mb-2">
+                            <span class="badge badge-primary mr-2">Económico</span>
+                            <span class="badge badge-info mr-2">Premium</span>
+                            <span class="badge badge-success">Business</span>
+                        </div>
+                        <div>
+                            <span class="badge badge-success mr-2">Disponible</span>
+                            <span class="badge badge-warning mr-2">Reservado</span>
+                            <span class="badge badge-danger">Ocupado</span>
+                        </div>
+                    </div>
+                    
+                    <div class="seat-layout">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Fila/Col</th>
+                                        {% for col in airplane.columns|times %}
+                                        <th>{{ forloop.counter|to_letter }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in airplane.rows|times %}
+                                    <tr>
+                                        <th>{{ forloop.counter }}</th>
+                                        {% for col in airplane.columns|times %}
+                                        {% with row_num=forloop.parentloop.counter col_num=forloop.counter %}
+                                        {% with seat_number=row_num|add:col_num|to_letter %}
+                                        {% with seat=seats|get_seat:seat_number %}
+                                        <td class="seat-cell {% if seat %}seat-type-{{ seat.type }} seat-status-{{ seat.status }}{% endif %}">
+                                            {% if seat %}
+                                            <div class="seat-number">{{ seat.number }}</div>
+                                            <div>
+                                                <a href="{% url 'backoffice:seat_update' seat.id %}" class="btn btn-sm btn-warning">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="{% url 'backoffice:seat_delete' seat.id %}" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                            {% else %}
+                                            <div>-</div>
+                                            {% endif %}
+                                        </td>
+                                        {% endwith %}
+                                        {% endwith %}
+                                        {% endwith %}
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Añadir Asiento</h6>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="{{ form.number.id_for_label }}">{{ form.number.label }}</label>
+                            {{ form.number }}
+                            {% if form.number.errors %}
+                                <div class="text-danger">{{ form.number.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="{{ form.row.id_for_label }}">{{ form.row.label }}</label>
+                            {{ form.row }}
+                            {% if form.row.errors %}
+                                <div class="text-danger">{{ form.row.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="{{ form.column.id_for_label }}">{{ form.column.label }}</label>
+                            {{ form.column }}
+                            {% if form.column.errors %}
+                                <div class="text-danger">{{ form.column.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="{{ form.type.id_for_label }}">{{ form.type.label }}</label>
+                            {{ form.type }}
+                            {% if form.type.errors %}
+                                <div class="text-danger">{{ form.type.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
+                            {{ form.status }}
+                            {% if form.status.errors %}
+                                <div class="text-danger">{{ form.status.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus mr-2"></i> Añadir Asiento
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .seat-cell {
+        text-align: center;
+        padding: 10px;
+        width: 80px;
+    }
+    .seat-number {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .seat-type-economy {
+        background-color: #e6f7ff;
+    }
+    .seat-type-premium {
+        background-color: #d1f0ff;
+    }
+    .seat-type-business {
+        background-color: #c2e7ff;
+    }
+    .seat-status-available {
+        border: 2px solid #28a745;
+    }
+    .seat-status-reserved {
+        border: 2px solid #ffc107;
+    }
+    .seat-status-occupied {
+        border: 2px solid #dc3545;
+    }
+</style>
+{% endblock %}

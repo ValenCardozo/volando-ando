@@ -1,0 +1,127 @@
+{% extends 'backoffice/base_backoffice.html' %}
+
+{% block title %}
+{% if flight.id %}Editar Vuelo{% else %}Nuevo Vuelo{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>{% if flight.id %}Editar Vuelo{% else %}Nuevo Vuelo{% endif %}</h1>
+        <a href="{% url 'backoffice:flight_list' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left mr-2"></i> Volver al listado
+        </a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">
+                {% if flight.id %}Editar Vuelo: {{ flight.origin }} a {{ flight.destination }}{% else %}Registrar Nuevo Vuelo{% endif %}
+            </h6>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="{{ form.airplane.id_for_label }}">{{ form.airplane.label }}</label>
+                        {{ form.airplane }}
+                        {% if form.airplane.errors %}
+                            <div class="text-danger">{{ form.airplane.errors }}</div>
+                        {% endif %}
+                        <small class="form-text text-muted">Seleccione el avión que realizará este vuelo.</small>
+                    </div>
+                    
+                    <div class="col-md-6 form-group">
+                        <label for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
+                        {{ form.status }}
+                        {% if form.status.errors %}
+                            <div class="text-danger">{{ form.status.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="{{ form.origin.id_for_label }}">{{ form.origin.label }}</label>
+                        {{ form.origin }}
+                        {% if form.origin.errors %}
+                            <div class="text-danger">{{ form.origin.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-6 form-group">
+                        <label for="{{ form.destination.id_for_label }}">{{ form.destination.label }}</label>
+                        {{ form.destination }}
+                        {% if form.destination.errors %}
+                            <div class="text-danger">{{ form.destination.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="{{ form.departure_time.id_for_label }}">{{ form.departure_time.label }}</label>
+                        {{ form.departure_time }}
+                        {% if form.departure_time.errors %}
+                            <div class="text-danger">{{ form.departure_time.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-6 form-group">
+                        <label for="{{ form.arrival_time.id_for_label }}">{{ form.arrival_time.label }}</label>
+                        {{ form.arrival_time }}
+                        {% if form.arrival_time.errors %}
+                            <div class="text-danger">{{ form.arrival_time.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4 form-group">
+                        <label for="{{ form.duration_hours.id_for_label }}">{{ form.duration_hours.label }}</label>
+                        {{ form.duration_hours }}
+                        {% if form.duration_hours.errors %}
+                            <div class="text-danger">{{ form.duration_hours.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-4 form-group">
+                        <label for="{{ form.duration_minutes.id_for_label }}">{{ form.duration_minutes.label }}</label>
+                        {{ form.duration_minutes }}
+                        {% if form.duration_minutes.errors %}
+                            <div class="text-danger">{{ form.duration_minutes.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-4 form-group">
+                        <label for="{{ form.base_price.id_for_label }}">{{ form.base_price.label }}</label>
+                        {{ form.base_price }}
+                        {% if form.base_price.errors %}
+                            <div class="text-danger">{{ form.base_price.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save mr-2"></i> Guardar
+                    </button>
+                    <a href="{% url 'backoffice:flight_list' %}" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

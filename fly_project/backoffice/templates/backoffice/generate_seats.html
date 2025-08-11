@@ -1,0 +1,85 @@
+{% extends 'backoffice/base_backoffice.html' %}
+
+{% block title %}Generar Layout de Asientos{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Generar Layout de Asientos</h1>
+        <a href="{% url 'backoffice:seat_management' airplane.id %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left mr-2"></i> Volver a Gestión de Asientos
+        </a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">{{ airplane.model }} - Configuración de Layout</h6>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle mr-2"></i>
+                <strong>Información:</strong> Esta acción generará un layout de asientos para el avión según sus dimensiones.
+                Se crearán {{ airplane.rows }} filas por {{ airplane.columns }} columnas ({{ airplane.rows|multiply:airplane.columns }} asientos en total).
+                <p class="mt-2 mb-0"><strong>¡Atención!</strong> Esto eliminará cualquier configuración de asientos existente.</p>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">Información del Avión</h6>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Modelo:</strong> {{ airplane.model }}</p>
+                                <p><strong>Capacidad:</strong> {{ airplane.capacity }} pasajeros</p>
+                                <p><strong>Configuración:</strong> {{ airplane.rows }} filas x {{ airplane.columns }} columnas</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="seat_type">Tipo de Asiento por Defecto</label>
+                            <select name="seat_type" id="seat_type" class="form-control">
+                                <option value="economy">Económico</option>
+                                <option value="premium">Premium</option>
+                                <option value="business">Business</option>
+                            </select>
+                            <small class="form-text text-muted">
+                                Todos los asientos se crearán con este tipo. Puedes cambiar tipos específicos después.
+                            </small>
+                        </div>
+                        
+                        <div class="form-group mt-4">
+                            <h5>Personalización Avanzada (opcional)</h5>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="premium_front" name="premium_front">
+                                <label class="custom-control-label" for="premium_front">
+                                    Primera fila como Premium
+                                </label>
+                            </div>
+                            <div class="custom-control custom-checkbox mt-2">
+                                <input type="checkbox" class="custom-control-input" id="business_front" name="business_front">
+                                <label class="custom-control-label" for="business_front">
+                                    Asientos delanteros como Business
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sync mr-2"></i> Generar Layout de Asientos
+                    </button>
+                    <a href="{% url 'backoffice:seat_management' airplane.id %}" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
