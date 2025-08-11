@@ -1,0 +1,63 @@
+{% extends 'backoffice/base_backoffice.html' %}
+
+{% block title %}Eliminar Vuelo{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-danger">Confirmar Eliminación</h6>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <strong>¡Atención!</strong> Está a punto de eliminar el vuelo de {{ flight.origin }} a {{ flight.destination }}.
+                <p class="mt-2 mb-0">Esta acción no se podrá deshacer. ¿Está seguro?</p>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Información del vuelo</h6>
+                </div>
+                <div class="card-body">
+                    <p><strong>ID:</strong> {{ flight.id }}</p>
+                    <p><strong>Origen:</strong> {{ flight.origin }}</p>
+                    <p><strong>Destino:</strong> {{ flight.destination }}</p>
+                    <p><strong>Fecha de salida:</strong> {{ flight.departure_time|date:"d/m/Y H:i" }}</p>
+                    <p><strong>Avión:</strong> {{ flight.airplane.model }}</p>
+                    <p><strong>Estado:</strong> 
+                        {% if flight.status == 'scheduled' %}
+                            <span class="badge badge-info">Programado</span>
+                        {% elif flight.status == 'in_flight' %}
+                            <span class="badge badge-primary">En vuelo</span>
+                        {% elif flight.status == 'completed' %}
+                            <span class="badge badge-success">Completado</span>
+                        {% elif flight.status == 'canceled' %}
+                            <span class="badge badge-danger">Cancelado</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            
+            {% if flight.reservations.all %}
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <strong>Advertencia:</strong> Este vuelo tiene {{ flight.reservations.count }} reservas asociadas que también serán eliminadas.
+            </div>
+            {% endif %}
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <a href="{% url 'backoffice:flight_detail' flight.id %}" class="btn btn-secondary">
+                        <i class="fas fa-times mr-2"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash mr-2"></i> Confirmar Eliminación
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

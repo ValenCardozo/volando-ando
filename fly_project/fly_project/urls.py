@@ -25,6 +25,7 @@ from django.views.i18n import set_language
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
+    path('backoffice/', include('backoffice.urls')),  # Nuevas URLs para el backoffice
     path('i18n/', include('django.conf.urls.i18n')),
     path('set_language', set_language, name="set_language")
 ]

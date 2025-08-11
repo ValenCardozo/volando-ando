@@ -1,0 +1,395 @@
+{% extends 'backoffice/base_backoffice.html' %}
+
+{% block title %}Estadísticas de Reservas{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Estadísticas de Reservas</h1>
+        <div>
+            <a href="{% url 'backoffice:flight_statistics' %}" class="btn btn-info">
+                <i class="fas fa-exchange-alt mr-2"></i> Ver Estadísticas de Vuelos
+            </a>
+            <a href="{% url 'backoffice:dashboard' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left mr-2"></i> Volver al Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total de Reservas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_reservations }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Reservas Pendientes</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ pending_reservations }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clock fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Reservas Confirmadas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ confirmed_reservations }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                Reservas Canceladas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ canceled_reservations }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-times-circle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Distribución de Estados de Reservas</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-pie pt-4">
+                        <canvas id="reservationStatusChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-warning"></i> Pendientes
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-success"></i> Confirmadas
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-danger"></i> Canceladas
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Tipos de Asientos Reservados</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-pie pt-4">
+                        <canvas id="seatTypeChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-primary"></i> Económico
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-info"></i> Premium
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-success"></i> Business
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Reservas Recientes</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="recentReservationsTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Vuelo</th>
+                            <th>Pasajero</th>
+                            <th>Asiento</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aquí se mostrarían datos reales de las reservas más recientes -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Ingresos Mensuales</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="monthlyRevenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Top 5 Vuelos con Más Reservas</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Vuelo</th>
+                                    <th>Ruta</th>
+                                    <th>Reservas</th>
+                                    <th>Ocupación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Aquí se mostrarían datos reales -->
+                                <tr>
+                                    <td>123</td>
+                                    <td>Buenos Aires - Madrid</td>
+                                    <td>120</td>
+                                    <td>95%</td>
+                                </tr>
+                                <tr>
+                                    <td>456</td>
+                                    <td>Buenos Aires - Miami</td>
+                                    <td>110</td>
+                                    <td>92%</td>
+                                </tr>
+                                <tr>
+                                    <td>789</td>
+                                    <td>Córdoba - Buenos Aires</td>
+                                    <td>98</td>
+                                    <td>89%</td>
+                                </tr>
+                                <tr>
+                                    <td>234</td>
+                                    <td>Buenos Aires - Santiago</td>
+                                    <td>87</td>
+                                    <td>85%</td>
+                                </tr>
+                                <tr>
+                                    <td>567</td>
+                                    <td>Mendoza - Buenos Aires</td>
+                                    <td>75</td>
+                                    <td>82%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Configuración del gráfico de estados de reservas
+    document.addEventListener('DOMContentLoaded', function() {
+        // Gráfico de estados de reservas
+        var reservationStatusCtx = document.getElementById('reservationStatusChart').getContext('2d');
+        var reservationStatusChart = new Chart(reservationStatusCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Pendientes', 'Confirmadas', 'Canceladas'],
+                datasets: [{
+                    data: [{{ pending_reservations }}, {{ confirmed_reservations }}, {{ canceled_reservations }}],
+                    backgroundColor: ['#f6c23e', '#1cc88a', '#e74a3b'],
+                    hoverBackgroundColor: ['#dda20a', '#17a673', '#be2617'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
+        
+        // Gráfico de tipos de asientos
+        var seatTypeCtx = document.getElementById('seatTypeChart').getContext('2d');
+        var seatTypeChart = new Chart(seatTypeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Económico', 'Premium', 'Business'],
+                datasets: [{
+                    data: [65, 25, 10], // Datos de ejemplo
+                    backgroundColor: ['#4e73df', '#36b9cc', '#1cc88a'],
+                    hoverBackgroundColor: ['#2e59d9', '#2c9faf', '#17a673'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
+        
+        // Gráfico de ingresos mensuales
+        var monthlyRevenueCtx = document.getElementById('monthlyRevenueChart').getContext('2d');
+        var monthlyRevenueChart = new Chart(monthlyRevenueCtx, {
+            type: 'line',
+            data: {
+                labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+                datasets: [{
+                    label: "Ingresos",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(78, 115, 223, 0.05)",
+                    borderColor: "rgba(78, 115, 223, 1)",
+                    pointRadius: 3,
+                    pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                    pointBorderColor: "rgba(78, 115, 223, 1)",
+                    pointHoverRadius: 3,
+                    pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                    pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                    pointHitRadius: 10,
+                    pointBorderWidth: 2,
+                    data: [15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 60000, 65000, 70000], // Datos de ejemplo
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 25,
+                        top: 25,
+                        bottom: 0
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        time: {
+                            unit: 'month'
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            maxTicksLimit: 12
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            maxTicksLimit: 5,
+                            padding: 10,
+                            callback: function(value, index, values) {
+                                return '$' + value;
+                            }
+                        },
+                        gridLines: {
+                            color: "rgb(234, 236, 244)",
+                            zeroLineColor: "rgb(234, 236, 244)",
+                            drawBorder: false,
+                            borderDash: [2],
+                            zeroLineBorderDash: [2]
+                        }
+                    }],
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    titleMarginBottom: 10,
+                    titleFontColor: '#6e707e',
+                    titleFontSize: 14,
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    intersect: false,
+                    mode: 'index',
+                    caretPadding: 10,
+                    callbacks: {
+                        label: function(tooltipItem, chart) {
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return datasetLabel + ': $' + tooltipItem.yLabel;
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

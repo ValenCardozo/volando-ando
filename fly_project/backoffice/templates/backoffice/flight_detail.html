@@ -1,0 +1,249 @@
+{% extends 'backoffice/base_backoffice.html' %}
+
+{% block title %}Detalles del Vuelo{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Vuelo: {{ flight.origin }} - {{ flight.destination }}</h1>
+        <div>
+            <a href="{% url 'backoffice:flight_update' flight.id %}" class="btn btn-warning">
+                <i class="fas fa-edit mr-2"></i> Editar
+            </a>
+            <a href="{% url 'backoffice:flight_list' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left mr-2"></i> Volver
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Información del Vuelo</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th style="width: 30%">ID</th>
+                                <td>{{ flight.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Origen</th>
+                                <td>{{ flight.origin }}</td>
+                            </tr>
+                            <tr>
+                                <th>Destino</th>
+                                <td>{{ flight.destination }}</td>
+                            </tr>
+                            <tr>
+                                <th>Salida</th>
+                                <td>{{ flight.departure_time|date:"d/m/Y H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <th>Llegada</th>
+                                <td>{{ flight.arrival_time|date:"d/m/Y H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <th>Duración</th>
+                                <td>{{ flight.duration }}</td>
+                            </tr>
+                            <tr>
+                                <th>Estado</th>
+                                <td>
+                                    {% if flight.status == 'scheduled' %}
+                                        <span class="badge badge-info">Programado</span>
+                                    {% elif flight.status == 'in_flight' %}
+                                        <span class="badge badge-primary">En vuelo</span>
+                                    {% elif flight.status == 'completed' %}
+                                        <span class="badge badge-success">Completado</span>
+                                    {% elif flight.status == 'canceled' %}
+                                        <span class="badge badge-danger">Cancelado</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Precio Base</th>
+                                <td>${{ flight.base_price }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Información del Avión</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th style="width: 30%">Modelo</th>
+                                <td>{{ flight.airplane.model }}</td>
+                            </tr>
+                            <tr>
+                                <th>Capacidad</th>
+                                <td>{{ flight.airplane.capacity }} pasajeros</td>
+                            </tr>
+                            <tr>
+                                <th>Configuración</th>
+                                <td>{{ flight.airplane.rows }} filas x {{ flight.airplane.columns }} columnas</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="mt-3">
+                        <a href="{% url 'backoffice:airplane_detail' flight.airplane.id %}" class="btn btn-sm btn-info">
+                            <i class="fas fa-info-circle mr-1"></i> Ver Detalles del Avión
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Reservas</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Pasajero</th>
+                            <th>Documento</th>
+                            <th>Asiento</th>
+                            <th>Estado</th>
+                            <th>Fecha de Reserva</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in reservations %}
+                        <tr>
+                            <td>{{ reservation.reservation_code }}</td>
+                            <td>{{ reservation.passenger.name }}</td>
+                            <td>{{ reservation.passenger.document }} ({{ reservation.passenger.document_type }})</td>
+                            <td>{{ reservation.seat.number }}</td>
+                            <td>
+                                {% if reservation.status == 'pending' %}
+                                    <span class="badge badge-warning">Pendiente</span>
+                                {% elif reservation.status == 'confirmed' %}
+                                    <span class="badge badge-success">Confirmada</span>
+                                {% elif reservation.status == 'canceled' %}
+                                    <span class="badge badge-danger">Cancelada</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ reservation.reservation_date|date:"d/m/Y H:i" }}</td>
+                            <td>${{ reservation.price }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center">No hay reservas para este vuelo.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Ocupación de Asientos</h6>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <div class="mb-2">
+                    <span class="badge badge-primary mr-2">Económico</span>
+                    <span class="badge badge-info mr-2">Premium</span>
+                    <span class="badge badge-success mr-2">Business</span>
+                </div>
+                <div>
+                    <span class="badge badge-success mr-2">Disponible</span>
+                    <span class="badge badge-warning mr-2">Reservado</span>
+                    <span class="badge badge-danger">Ocupado</span>
+                </div>
+            </div>
+            
+            <div class="seat-occupancy">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Fila/Col</th>
+                                {% for col in flight.airplane.columns|times %}
+                                <th>{{ forloop.counter|to_letter }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in flight.airplane.rows|times %}
+                            <tr>
+                                <th>{{ forloop.counter }}</th>
+                                {% for col in flight.airplane.columns|times %}
+                                {% with row_num=forloop.parentloop.counter col_num=forloop.counter %}
+                                {% with seat_number=row_num|add:col_num|to_letter %}
+                                {% with seat=seats|get_seat:seat_number %}
+                                <td class="seat-cell {% if seat %}seat-type-{{ seat.type }} seat-status-{{ seat.status }}{% endif %}">
+                                    {% if seat %}
+                                    <div class="seat-number">{{ seat.number }}</div>
+                                    {% if seat.reservation %}
+                                    <div class="seat-passenger">{{ seat.reservation.passenger.name|truncatechars:15 }}</div>
+                                    {% endif %}
+                                    {% else %}
+                                    <div>-</div>
+                                    {% endif %}
+                                </td>
+                                {% endwith %}
+                                {% endwith %}
+                                {% endwith %}
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .seat-cell {
+        text-align: center;
+        padding: 10px;
+        width: 80px;
+    }
+    .seat-number {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .seat-passenger {
+        font-size: 0.8em;
+    }
+    .seat-type-economy {
+        background-color: #e6f7ff;
+    }
+    .seat-type-premium {
+        background-color: #d1f0ff;
+    }
+    .seat-type-business {
+        background-color: #c2e7ff;
+    }
+    .seat-status-available {
+        border: 2px solid #28a745;
+    }
+    .seat-status-reserved {
+        border: 2px solid #ffc107;
+    }
+    .seat-status-occupied {
+        border: 2px solid #dc3545;
+    }
+</style>
+{% endblock %}

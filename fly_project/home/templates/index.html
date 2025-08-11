@@ -1,38 +1,39 @@
 {% extends 'base.html' %}
 
 {% load i18n %}
+{% load static %}
 
 {% block title %}{% trans "Volando Ando - Reserva tu vuelo" %}{% endblock %}
 
 {% block content %}
 <div class="container py-5">
     {% if not user.is_authenticated %}
-    <div class="jumbotron bg-light shadow-sm">
+    <div class="jumbotron bg-light shadow-sm rounded-lg border-0">
         <h1 class="display-4">{% trans "Bienvenido a Volando Ando" %}</h1>
         <p class="lead">{% trans "Tu plataforma para encontrar y reservar los mejores vuelos a los precios más competitivos." %}</p>
         <hr class="my-4">
         <div class="row">
             <div class="col-md-6">
-                <div class="card mb-3">
+                <div class="card mb-3 border-0 shadow-sm rounded-lg">
                     <div class="card-body">
                         <h3 class="card-title">{% trans "¿Qué ofrecemos?" %}</h3>
                         <ul class="list-unstyled">
-                            <li><i class="fas fa-plane-departure mr-2 text-primary"></i>{% trans "Amplia selección de vuelos nacionales e internacionales" %}</li>
-                            <li><i class="fas fa-tags mr-2 text-primary"></i>{% trans "Precios competitivos y ofertas exclusivas" %}</li>
-                            <li><i class="fas fa-clock mr-2 text-primary"></i>{% trans "Reservas rápidas y seguras" %}</li>
-                            <li><i class="fas fa-medal mr-2 text-primary"></i>{% trans "Mejor servicio al cliente" %}</li>
+                            <li class="mb-2"><i class="fas fa-plane-departure mr-2 text-primary"></i>{% trans "Amplia selección de vuelos nacionales e internacionales" %}</li>
+                            <li class="mb-2"><i class="fas fa-tags mr-2 text-primary"></i>{% trans "Precios competitivos y ofertas exclusivas" %}</li>
+                            <li class="mb-2"><i class="fas fa-clock mr-2 text-primary"></i>{% trans "Reservas rápidas y seguras" %}</li>
+                            <li class="mb-2"><i class="fas fa-medal mr-2 text-primary"></i>{% trans "Mejor servicio al cliente" %}</li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card">
+                <div class="card border-0 shadow-sm rounded-lg">
                     <div class="card-body">
                         <h3 class="card-title">{% trans "Comienza ahora mismo" %}</h3>
                         <p>{% trans "Crea una cuenta o inicia sesión para acceder a todas las funcionalidades:" %}</p>
                         <div class="d-flex mt-4">
-                            <a class="btn btn-primary btn-lg mr-3" href="{% url 'login' %}" role="button">{% trans "Iniciar Sesión" %}</a>
-                            <a class="btn btn-outline-primary btn-lg" href="{% url 'register' %}" role="button">{% trans "Registrarse" %}</a>
+                            <a class="btn btn-primary btn-lg mr-3 rounded-pill px-4" href="{% url 'login' %}" role="button">{% trans "Iniciar Sesión" %}</a>
+                            <a class="btn btn-outline-primary btn-lg rounded-pill px-4" href="{% url 'register' %}" role="button">{% trans "Registrarse" %}</a>
                         </div>
                     </div>
                 </div>
@@ -42,7 +43,7 @@
     {% else %}
     <div class="row mb-5">
         <div class="col-12">
-            <div class="jumbotron bg-light shadow-sm">
+            <div class="jumbotron bg-light shadow-sm rounded-lg border-0">
                 <h1 class="display-4">{% trans "¡Hola" %}, {{ user.username }}!</h1>
                 <p class="lead">{% trans "¿A dónde te gustaría viajar hoy?" %}</p>
             </div>
@@ -51,32 +52,32 @@
     
     <div class="row">
         <div class="col-md-4 mb-3">
-            <div class="card shadow-sm h-100">
+            <div class="card shadow-sm h-100 border-0 rounded-lg">
                 <div class="card-body text-center">
                     <i class="fas fa-ticket-alt fa-3x text-primary mb-3"></i>
-                    <h4  href="{% url 'my_flights' %}">{% trans "Mis Vuelos" %}</h4>
+                    <h4>{% trans "Mis Vuelos" %}</h4>
                     <p>{% trans "Accede a tus reservas y tickets" %}</p>
-                    <a href="{% url 'my_flights' %}" class="btn btn-outline-primary">{% trans "Ver Mis Vuelos" %}</a>
+                    <a href="{% url 'my_flights' %}" class="btn btn-outline-primary rounded-pill px-4">{% trans "Ver Mis Vuelos" %}</a>
                 </div>
             </div>
         </div>
         <div class="col-md-4 mb-3">
-            <div class="card shadow-sm h-100">
+            <div class="card shadow-sm h-100 border-0 rounded-lg">
                 <div class="card-body text-center">
                     <i class="fas fa-map-marked-alt fa-3x text-primary mb-3"></i>
                     <h4>{% trans "Destinos Populares" %}</h4>
                     <p>{% trans "Descubre nuevos lugares para visitar" %}</p>
-                    <a href="" class="btn btn-outline-primary">{% trans "Explorar Destinos" %}</a>
+                    <a href="" class="btn btn-outline-primary rounded-pill px-4">{% trans "Explorar Destinos" %}</a>
                 </div>
             </div>
         </div>
         <div class="col-md-4 mb-3">
-            <div class="card shadow-sm h-100">
+            <div class="card shadow-sm h-100 border-0 rounded-lg">
                 <div class="card-body text-center">
                     <i class="fas fa-percentage fa-3x text-primary mb-3"></i>
                     <h4>{% trans "Ofertas Especiales" %}</h4>
                     <p>{% trans "No te pierdas nuestras mejores promociones" %}</p>
-                    <a href="{% url 'offers' %}" class="btn btn-outline-primary">{% trans "Ver Ofertas" %}</a>
+                    <a href="{% url 'offers' %}" class="btn btn-outline-primary rounded-pill px-4">{% trans "Ver Ofertas" %}</a>
                 </div>
             </div>
         </div>
@@ -84,81 +85,207 @@
     
     <div class="row mb-4 mt-4">
         <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">{% trans "Buscar Vuelos" %}</h4>
+            <div class="card border-0 shadow-sm rounded-lg overflow-hidden">
+                <!-- Background image for the card header -->
+                <div class="position-relative">
+                    <div style="background-image: url('{% static 'img/flight-search-bg.jpg' %}'); height: 200px; background-size: cover; background-position: center;">
+                        <div class="mask d-flex align-items-center h-100" style="background-color: rgba(0, 0, 0, 0.5);">
+                            <div class="container">
+                                <h2 class="text-white mb-0 pl-3">{% trans "Encuentra Tu Vuelo Perfecto" %}</h2>
+                                <p class="text-white-50 pl-3 mb-0">{% trans "Descubre destinos increíbles a los mejores precios" %}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
+                
+                <div class="card-body p-4">
                     <form class="row" method="get" action="">
+                        <!-- Origin field with icon -->
                         <div class="col-md-4 mb-3">
-                            <label for="id_origin">{% trans "Origen" %}</label>
+                            <label for="id_origin" class="form-label">
+                                <i class="fas fa-plane-departure text-primary mr-2"></i>{% trans "Origen" %}
+                            </label>
                             {{ form.origin }}
                         </div>
+                        
+                        <!-- Destination field with icon -->
                         <div class="col-md-4 mb-3">
-                            <label for="id_destination">{% trans "Destino" %}</label>
+                            <label for="id_destination" class="form-label">
+                                <i class="fas fa-plane-arrival text-primary mr-2"></i>{% trans "Destino" %}
+                            </label>
                             {{ form.destination }}
                         </div>
+                        
+                        <!-- Trip type with modern toggles -->
                         <div class="col-md-4 mb-3">
-                            <label class="d-block">{% trans "Tipo de viaje" %}</label>
-                            {{ form.trip_type }}
+                            <label class="d-block form-label">
+                                <i class="fas fa-exchange-alt text-primary mr-2"></i>{% trans "Tipo de Viaje" %}
+                            </label>
+                            <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
+                                <label class="btn btn-outline-primary active flex-grow-1 rounded-left">
+                                    <input type="radio" name="trip_type" id="roundtrip" value="roundtrip" checked> {% trans "Ida y Vuelta" %}
+                                </label>
+                                <label class="btn btn-outline-primary flex-grow-1 rounded-right">
+                                    <input type="radio" name="trip_type" id="oneway" value="oneway"> {% trans "Solo Ida" %}
+                                </label>
+                            </div>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <label for="id_departure_date">{% trans "Fecha de ida" %}</label>
+                        
+                        <!-- Date fields with calendar icons -->
+                        <div class="col-md-3 mb-3" id="departure_date_container">
+                            <label for="id_departure_date" class="form-label">
+                                <i class="far fa-calendar-alt text-primary mr-2"></i>{% trans "Fecha de Ida" %}
+                            </label>
                             {{ form.departure_date }}
                         </div>
+                        
                         <div class="col-md-3 mb-3" id="return_date_container">
-                            <label for="id_return_date">{% trans "Fecha de vuelta" %}</label>
+                            <label for="id_return_date" class="form-label">
+                                <i class="far fa-calendar-alt text-primary mr-2"></i>{% trans "Fecha de Vuelta" %}
+                            </label>
                             {{ form.return_date }}
                         </div>
+                        
+                        <!-- Passengers count -->
                         <div class="col-md-3 mb-3">
-                            <label for="id_passengers">{% trans "Pasajeros" %}</label>
+                            <label for="id_passengers" class="form-label">
+                                <i class="fas fa-users text-primary mr-2"></i>{% trans "Pasajeros" %}
+                            </label>
                             {{ form.passengers }}
                         </div>
+                        
+                        <!-- Class selection -->
                         <div class="col-md-3 mb-3">
-                            <label for="id_seat_class">{% trans "Clase" %}</label>
+                            <label for="id_seat_class" class="form-label">
+                                <i class="fas fa-chair text-primary mr-2"></i>{% trans "Clase" %}
+                            </label>
                             {{ form.seat_class }}
                         </div>
-                        <div class="col-12 text-center mt-2">
-                            <button type="submit" class="btn btn-primary btn-lg">{% trans "Buscar Vuelos" %}</button>
+                        
+                        <!-- Search button -->
+                        <div class="col-12 text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5 rounded-pill shadow-sm">
+                                <i class="fas fa-search mr-2"></i>{% trans "Buscar Vuelos" %}
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Destination highlights with images -->
+    <div class="row mt-5 mb-5">
+        <div class="col-12 mb-4 text-center">
+            <h3 class="text-primary">{% trans "Destinos Populares" %}</h3>
+            <p class="text-muted">{% trans "Explora nuestros destinos más reservados" %}</p>
+        </div>
+        
+        <!-- Destination Card 1 -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm rounded-lg overflow-hidden h-100">
+                <div class="bg-image hover-overlay" style="height: 200px;">
+                    <img src="{% static 'img/destinations/buenos-aires.jpg' %}" class="img-fluid w-100 h-100" style="object-fit: cover;" alt="Buenos Aires">
+                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.3)"></div>
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">Buenos Aires</h5>
+                    <p class="card-text text-muted">{% trans "Experimenta la vibrante cultura y arquitectura" %}</p>
+                    <a href="#" class="btn btn-outline-primary btn-sm rounded-pill px-4">
+                        {% trans "Explorar" %} <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Destination Card 2 -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm rounded-lg overflow-hidden h-100">
+                <div class="bg-image hover-overlay" style="height: 200px;">
+                    <img src="{% static 'img/destinations/madrid.jpg' %}" class="img-fluid w-100 h-100" style="object-fit: cover;" alt="Madrid">
+                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.3)"></div>
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">Madrid</h5>
+                    <p class="card-text text-muted">{% trans "Descubre la capital de España y su rica historia" %}</p>
+                    <a href="#" class="btn btn-outline-primary btn-sm rounded-pill px-4">
+                        {% trans "Explorar" %} <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Destination Card 3 -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm rounded-lg overflow-hidden h-100">
+                <div class="bg-image hover-overlay" style="height: 200px;">
+                    <img src="{% static 'img/destinations/bariloche.jpg' %}" class="img-fluid w-100 h-100" style="object-fit: cover;" alt="Bariloche">
+                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.3)"></div>
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">Bariloche</h5>
+                    <p class="card-text text-muted">{% trans "Disfruta de impresionantes vistas de montañas y lagos" %}</p>
+                    <a href="#" class="btn btn-outline-primary btn-sm rounded-pill px-4">
+                        {% trans "Explorar" %} <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     {% if flights is not None %}
     <div class="row justify-content-center mt-4 mb-5">
-        <div class="col-lg-8">
-            <div class="card border-primary shadow-sm">
-                <div class="card-header bg-primary text-white">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm rounded-lg">
+                <div class="card-header bg-primary text-white py-3">
                     <h5 class="mb-0">{% trans "Resultados de la búsqueda" %}</h5>
                 </div>
                 <div class="card-body">
                     {% if flights %}
                         <ul class="list-group list-group-flush">
                         {% for flight in flights %}
-                            <li class="list-group-item mb-2">
-                                <strong>{% trans "Vuelo" %} {{ flight.id }}</strong>: {{ flight.origin }} → {{ flight.destination }}<br>
-                                <span class="text-muted">{{ flight.departure_time|date:'d/m/Y H:i' }} - {{ flight.arrival_time|date:'d/m/Y H:i' }}</span><br>
-                                <span class="badge bg-info text-dark">{{ flight.get_status_display }}</span>
-                                <span class="badge bg-success">${{ flight.base_price }}</span>
-                                {% if user.is_authenticated %}
-                                    {% if flight.id in user_reservations %}
-                                        <span class="badge badge-warning float-end">{% trans "Ya reservado" %}</span>
-                                    {% else %}
-                                        <form method="post" action="{% url 'confirm_reservation_prompt' flight.id %}" class="d-inline-block float-end ms-2">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-sm btn-primary">{% trans "Reservar" %}</button>
-                                        </form>
-                                    {% endif %}
-                                {% else %}
-                                    <span class="text-muted float-end">{% trans "Inicia sesión para reservar" %}</span>
-                                {% endif %}
+                            <li class="list-group-item mb-2 border-0 shadow-sm rounded-lg p-3 mb-3">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-9">
+                                        <div class="d-flex align-items-center">
+                                            <div class="me-3">
+                                                <i class="fas fa-plane fa-2x text-primary"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="mb-1">{% trans "Vuelo" %} {{ flight.id }}: {{ flight.origin }} → {{ flight.destination }}</h5>
+                                                <p class="text-muted mb-1">
+                                                    <i class="far fa-clock me-1"></i> {{ flight.departure_time|date:'d/m/Y H:i' }} - {{ flight.arrival_time|date:'d/m/Y H:i' }}
+                                                </p>
+                                                <div>
+                                                    <span class="badge bg-info text-dark me-2">{{ flight.get_status_display }}</span>
+                                                    <span class="badge bg-success">${{ flight.base_price }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 text-end mt-3 mt-lg-0">
+                                        {% if user.is_authenticated %}
+                                            {% if flight.id in user_reservations %}
+                                                <span class="badge badge-warning py-2 px-3">{% trans "Ya reservado" %}</span>
+                                            {% else %}
+                                                <form method="post" action="{% url 'confirm_reservation_prompt' flight.id %}" class="d-inline-block">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-primary rounded-pill px-4">{% trans "Reservar" %}</button>
+                                                </form>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="text-muted">{% trans "Inicia sesión para reservar" %}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
                             </li>
                         {% endfor %}
                         </ul>
                     {% else %}
-                        <p class="text-danger mb-0">{% trans "No se encontraron vuelos para los criterios seleccionados." %}</p>
+                        <div class="alert alert-warning border-0 shadow-sm">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <span>{% trans "No se encontraron vuelos para los criterios seleccionados." %}</span>
+                        </div>
                     {% endif %}
                 </div>
             </div>

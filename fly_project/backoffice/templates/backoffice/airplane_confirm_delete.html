@@ -1,0 +1,44 @@
+{% extends 'backoffice/base_backoffice.html' %}
+
+{% block title %}Eliminar Avión{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-danger">Confirmar Eliminación</h6>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <strong>¡Atención!</strong> Está a punto de eliminar el avión "{{ airplane.model }}".
+                <p class="mt-2 mb-0">Esta acción no se podrá deshacer. ¿Está seguro?</p>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Información del avión</h6>
+                </div>
+                <div class="card-body">
+                    <p><strong>ID:</strong> {{ airplane.id }}</p>
+                    <p><strong>Modelo:</strong> {{ airplane.model }}</p>
+                    <p><strong>Capacidad:</strong> {{ airplane.capacity }} pasajeros</p>
+                    <p><strong>Configuración:</strong> {{ airplane.rows }} filas x {{ airplane.columns }} columnas</p>
+                </div>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <a href="{% url 'backoffice:airplane_detail' airplane.id %}" class="btn btn-secondary">
+                        <i class="fas fa-times mr-2"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash mr-2"></i> Confirmar Eliminación
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

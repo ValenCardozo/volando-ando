@@ -1,0 +1,71 @@
+{% extends 'backoffice/base_backoffice.html' %}
+
+{% block title %}
+{% if airplane.id %}Editar Avión{% else %}Nuevo Avión{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>{% if airplane.id %}Editar Avión{% else %}Nuevo Avión{% endif %}</h1>
+        <a href="{% url 'backoffice:airplane_list' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left mr-2"></i> Volver al listado
+        </a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">
+                {% if airplane.id %}Editar Avión: {{ airplane.model }}{% else %}Registrar Nuevo Avión{% endif %}
+            </h6>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="{{ form.model.id_for_label }}">{{ form.model.label }}</label>
+                        {{ form.model }}
+                        {% if form.model.errors %}
+                            <div class="text-danger">{{ form.model.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="{{ form.capacity.id_for_label }}">{{ form.capacity.label }}</label>
+                        {{ form.capacity }}
+                        {% if form.capacity.errors %}
+                            <div class="text-danger">{{ form.capacity.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="{{ form.rows.id_for_label }}">{{ form.rows.label }}</label>
+                        {{ form.rows }}
+                        {% if form.rows.errors %}
+                            <div class="text-danger">{{ form.rows.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="{{ form.columns.id_for_label }}">{{ form.columns.label }}</label>
+                        {{ form.columns }}
+                        {% if form.columns.errors %}
+                            <div class="text-danger">{{ form.columns.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save mr-2"></i> Guardar
+                    </button>
+                    <a href="{% url 'backoffice:airplane_list' %}" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

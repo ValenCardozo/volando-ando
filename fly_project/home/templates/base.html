@@ -14,82 +14,211 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/aeroplane_white.png' %}">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/aeroplane_white.png' %}">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" crossorigin="anonymous">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --accent-color: #1abc9c;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        .navbar-brand img {
+            transition: transform 0.3s ease;
+        }
+        .navbar-brand:hover img {
+            transform: scale(1.1);
+        }
+        .btn {
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,.1);
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .form-control {
+            border-radius: 50px;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid #e0e0e0;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+            border-color: var(--primary-color);
+        }
+        .dropdown-menu {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .alert {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,.05);
+        }
+    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand" href="{% url 'index' %}">
-            <img src="{% static 'img/aeroplane_white.png' %}" style="height:32px; width:auto;">
-        </a>
-        {% if user.is_authenticated %}
-            <div class="d-flex align-items-center">
-                <a class="btn btn-primary mr-2" href="/" class="custom">{% trans "Vuelos" %}</a>
-                <a class="btn btn-primary mr-3" href="{% url 'my_flights' %}">{% trans "Mis vuelos" %}</a>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-user-circle mr-1"></i> {{ user.username }}
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <h6 class="dropdown-header">{% trans "Idioma" %}</h6>
-                        <form action="{% url 'set_language' %}" method="post" class="px-3 py-1">
-                            {% csrf_token %}
-                            <div class="form-group mb-0">
-                                <select name="language" id="" class="form-control form-control-sm" onchange="this.form.submit()">
-                                    <option value="es" {% if request.LANGUAGE_CODE == 'es' %} selected {% endif %}>Español</option>
-                                    <option value="en" {% if request.LANGUAGE_CODE == 'en' %} selected {% endif %}>English</option>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+                <img src="{% static 'img/aeroplane_white.png' %}" style="height:32px; width:auto;" class="me-2">
+                <span class="fw-bold">Volando Ando</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item mx-1">
+                            <a class="btn btn-primary" href="/">{% trans "Vuelos" %}</a>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <a class="btn btn-outline-light" href="{% url 'my_flights' %}">{% trans "Mis vuelos" %}</a>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <a class="btn btn-outline-light" href="{% url 'offers' %}">{% trans "Ofertas" %}</a>
+                        </li>
+                        <li class="nav-item dropdown ms-2">
+                            <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle me-1"></i> {{ user.username }}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><h6 class="dropdown-header">{% trans "Idioma" %}</h6></li>
+                                <li>
+                                    <form action="{% url 'set_language' %}" method="post" class="px-3 py-1">
+                                        {% csrf_token %}
+                                        <div class="form-group mb-0">
+                                            <select name="language" class="form-select form-select-sm" onchange="this.form.submit()">
+                                                <option value="es" {% if request.LANGUAGE_CODE == 'es' %} selected {% endif %}>Español</option>
+                                                <option value="en" {% if request.LANGUAGE_CODE == 'en' %} selected {% endif %}>English</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                        <i class="fas fa-sign-out-alt me-1"></i> {% trans "Cerrar sesión" %}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item mx-1">
+                            <a class="btn btn-primary" href="{% url 'login' %}">
+                                <i class="fas fa-sign-in-alt me-1"></i> {% trans "Iniciar Sesión" %}
+                            </a>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <a class="btn btn-outline-light" href="{% url 'register' %}">
+                                <i class="fas fa-user-plus me-1"></i> {% trans "Registrarse" %}
+                            </a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <form action="{% url 'set_language' %}" method="post" class="mb-0 d-flex align-items-center">
+                                {% csrf_token %}
+                                <select name="language" class="form-select form-select-sm bg-dark text-light border-secondary" style="width: 70px;" onchange="this.form.submit()">
+                                    <option value="es" {% if LANGUAGE_CODE == 'es' %} selected {% endif %}>ES</option>
+                                    <option value="en" {% if LANGUAGE_CODE == 'en' %} selected {% endif %}>EN</option>
                                 </select>
-                            </div>
-                        </form>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-danger" href="{% url 'logout' %}">
-                            <i class="fas fa-sign-out-alt mr-1"></i> {% trans "Cerrar sesión" %}
-                        </a>
-                    </div>
-                </div>
+                            </form>
+                        </li>
+                    {% endif %}
+                </ul>
             </div>
-        {% else %}
-        <div class="d-flex align-items-center">
-            <a class="btn btn-primary mr-2" href="{% url 'login' %}"> Iniciar Sesion </a>
-            <a class="btn btn-secondary mr-3" href="{% url 'register' %}"> Registrarse </a>
-
-            <form action="{% url 'set_language' %}" method="post" class="mb-0">
-                {% csrf_token %}
-                <select name="language" id="" class="form-control" onchange="this.form.submit()">
-                    <option value="es" {% if LANGUAGE_CODE == 'es' %} selected {% endif %}>ES</option>
-                    <option value="en" {% if LANGUAGE_CODE == 'en' %} selected {% endif %}>EN</option>
-                </select>
-            </form>
         </div>
-        {% endif %}
     </nav>
 
     {% if messages %}
-    {% for message in messages %}
-    {%if message.tags == 'error' %}
-    <div class="alert alert-danger">{{message}}</div>
-    {% else %}
-    <div class="alert alert-{{message.tags}}">{{message}}</div>
-    {% endif %}
-    {% endfor %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        {%if message.tags == 'error' %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>{{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% else %}
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+            <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} me-2"></i>
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
     {% endif %}
 
     {% block content %}{% endblock %}
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+    
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Volando Ando</h5>
+                    <p class="text-muted">{% trans "Tu plataforma para encontrar y reservar los mejores vuelos" %}</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>{% trans "Enlaces" %}</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'index' %}" class="text-decoration-none text-light">{% trans "Inicio" %}</a></li>
+                        <li><a href="{% url 'offers' %}" class="text-decoration-none text-light">{% trans "Ofertas" %}</a></li>
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'my_flights' %}" class="text-decoration-none text-light">{% trans "Mis Vuelos" %}</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>{% trans "Contacto" %}</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i> info@volandoando.com</li>
+                        <li><i class="fas fa-phone me-2"></i> +54 11 5555-5555</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0 text-muted">&copy; 2025 Volando Ando. {% trans "Todos los derechos reservados" %}</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/hello.js' %}"></script>
 </body>
 
