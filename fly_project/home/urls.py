@@ -1,4 +1,5 @@
-from django.urls import path
+from django.conf.urls.i18n import i18n_patterns
+from django.urls import path, include
 
 from home.views import (
     HomeView,
@@ -24,4 +25,5 @@ urlpatterns = [
     path('confirm-reservation/<int:flight_id>/', ConfirmReservationView.as_view(), name='confirm_reservation_prompt'),
     path('finalize-reservation/<int:flight_id>/', FinalizeReservationView.as_view(), name='finalize_reservation'),
     path('', HomeView.as_view(), name='index'),
+    path('i18n/', include('django.conf.urls.i18n')),
 ]
