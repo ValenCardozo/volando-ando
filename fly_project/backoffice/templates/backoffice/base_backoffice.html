@@ -13,77 +13,187 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/aeroplane_white.png' %}">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/aeroplane_white.png' %}">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" crossorigin="anonymous">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --accent-color: #1abc9c;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        .btn {
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,.1);
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .form-control, .form-select {
+            border-radius: 50px;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid #e0e0e0;
+        }
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+            border-color: var(--primary-color);
+        }
+        .dropdown-menu {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .alert {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,.05);
+        }
+        .sidebar {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,.05);
+            border-radius: 0 15px 15px 0;
+        }
+        .list-group-item {
+            border: none;
+            padding: 12px 20px;
+            margin-bottom: 3px;
+            border-radius: 50px !important;
+            transition: all 0.3s ease;
+        }
+        .list-group-item:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            transform: translateX(5px);
+        }
+        .list-group-item.active {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .pagination .page-link {
+            border-radius: 50%;
+            margin: 0 3px;
+            border: none;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand" href="{% url 'backoffice:dashboard' %}">
-            <img src="{% static 'img/aeroplane_white.png' %}" style="height:32px; width:auto;">
-            <span class="ml-2">Panel de Administración</span>
-        </a>
-        <div class="d-flex align-items-center">
-            <a class="btn btn-outline-light mr-2" href="{% url 'index' %}">
-                <i class="fas fa-home mr-1"></i> Volver a sitio principal
+    <nav class="navbar navbar-dark bg-dark py-3">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'backoffice:dashboard' %}">
+                <img src="{% static 'img/aeroplane_white.png' %}" style="height:32px; width:auto;" class="me-2">
+                <span class="fw-bold">Panel de Administración</span>
             </a>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-user-circle mr-1"></i> {{ user.username }}
-                </button>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                    <h6 class="dropdown-header">{% trans "Idioma" %}</h6>
-                    <form action="{% url 'set_language' %}" method="post" class="px-3 py-1">
-                        {% csrf_token %}
-                        <div class="form-group mb-0">
-                            <select name="language" id="" class="form-control form-control-sm" onchange="this.form.submit()">
-                                <option value="es" {% if request.LANGUAGE_CODE == 'es' %} selected {% endif %}>Español</option>
-                                <option value="en" {% if request.LANGUAGE_CODE == 'en' %} selected {% endif %}>English</option>
-                            </select>
-                        </div>
-                    </form>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-danger" href="{% url 'logout' %}">
-                        <i class="fas fa-sign-out-alt mr-1"></i> {% trans "Cerrar sesión" %}
-                    </a>
+            <div class="d-flex align-items-center">
+                <a class="btn btn-outline-light me-2" href="{% url 'index' %}">
+                    <i class="fas fa-home me-1"></i> Volver a sitio principal
+                </a>
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle me-1"></i> {{ user.username }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><h6 class="dropdown-header">{% trans "Idioma" %}</h6></li>
+                        <li>
+                            <form action="{% url 'set_language' %}" method="post" class="px-3 py-1">
+                                {% csrf_token %}
+                                <div class="mb-0">
+                                    <select name="language" class="form-select form-select-sm" onchange="this.form.submit()">
+                                        <option value="es" {% if request.LANGUAGE_CODE == 'es' %} selected {% endif %}>Español</option>
+                                        <option value="en" {% if request.LANGUAGE_CODE == 'en' %} selected {% endif %}>English</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                <i class="fas fa-sign-out-alt me-1"></i> {% trans "Cerrar sesión" %}
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="container-fluid mt-4">
-        <div class="row">
+    <div class="container-fluid">
+        <div class="row g-0">
             <!-- Sidebar -->
-            <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
-                <div class="list-group">
-                    <a href="{% url 'backoffice:dashboard' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
-                        <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
-                    </a>
-                    <a href="{% url 'backoffice:flight_list' %}" class="list-group-item list-group-item-action {% if 'flight' in request.resolver_match.url_name %}active{% endif %}">
-                        <i class="fas fa-plane mr-2"></i> Vuelos
-                    </a>
-                    <a href="{% url 'backoffice:airplane_list' %}" class="list-group-item list-group-item-action {% if 'airplane' in request.resolver_match.url_name %}active{% endif %}">
-                        <i class="fas fa-plane-departure mr-2"></i> Aviones
-                    </a>
-                    <a href="{% url 'backoffice:flight_statistics' %}" class="list-group-item list-group-item-action {% if 'statistics' in request.resolver_match.url_name %}active{% endif %}">
-                        <i class="fas fa-chart-bar mr-2"></i> Estadísticas
-                    </a>
+            <div class="col-md-3 col-lg-2 d-md-block sidebar py-4" style="min-height: calc(100vh - 76px);">
+                <div class="px-3">
+                    <div class="list-group">
+                        <a href="{% url 'backoffice:dashboard' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                        </a>
+                        <a href="{% url 'backoffice:flight_list' %}" class="list-group-item list-group-item-action {% if 'flight' in request.resolver_match.url_name and 'statistics' not in request.resolver_match.url_name %}active{% endif %}">
+                            <i class="fas fa-plane me-2"></i> Vuelos
+                        </a>
+                        <a href="{% url 'backoffice:airplane_list' %}" class="list-group-item list-group-item-action {% if 'airplane' in request.resolver_match.url_name %}active{% endif %}">
+                            <i class="fas fa-plane-departure me-2"></i> Aviones
+                        </a>
+                        <a href="{% url 'backoffice:flight_statistics' %}" class="list-group-item list-group-item-action {% if 'statistics' in request.resolver_match.url_name %}active{% endif %}">
+                            <i class="fas fa-chart-bar me-2"></i> Estadísticas
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <!-- Main content -->
-            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
                 {% if messages %}
-                {% for message in messages %}
-                {%if message.tags == 'error' %}
-                <div class="alert alert-danger">{{message}}</div>
-                {% else %}
-                <div class="alert alert-{{message.tags}}">{{message}}</div>
-                {% endif %}
-                {% endfor %}
+                <div class="messages mb-4">
+                    {% for message in messages %}
+                    {%if message.tags == 'error' %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>{{message}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                        <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} me-2"></i>
+                        {{message}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
                 {% endif %}
 
                 {% block content %}{% endblock %}
@@ -91,16 +201,8 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/hello.js' %}"></script>
 </body>
 

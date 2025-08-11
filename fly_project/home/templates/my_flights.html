@@ -7,45 +7,101 @@
 <div class="container py-5">
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">{% trans "Mis Reservas de Vuelo" %}</h3>
+            <div class="card border-0 shadow-sm rounded-lg">
+                <div class="card-header bg-primary text-white py-3 rounded-top">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-ticket-alt me-3 fa-2x"></i>
+                        <h3 class="mb-0 fw-bold">{% trans "Mis Reservas de Vuelo" %}</h3>
+                    </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
                     {% if reservations %}
-                        <ul class="list-group list-group-flush">
-                        {% for r in reservations %}
-                            {% if r.flight.departure_time < now %}
-                                <li class="list-group-item mb-2 bg-light text-muted">
-                                    <strong>{% trans "Vuelo" %} {{ r.flight.id }}</strong>: {{ r.flight.origin }} → {{ r.flight.destination }}<br>
-                                    <span class="text-muted">{{ r.flight.departure_time|date:'d/m/Y H:i' }} - {{ r.flight.arrival_time|date:'d/m/Y H:i' }}</span><br>
-                                    <span class="badge badge-secondary">{% trans "Caducado" %}</span>
-                                    <span class="badge bg-info text-dark">{{ r.flight.get_status_display }}</span>
-                                    <span class="badge bg-success">${{ r.price }}</span>
-                                    <span class="badge bg-secondary">{% trans "Asiento" %}: {{ r.seat.number }}</span>
-                                    <span class="badge bg-dark text-muted">{% trans "Código" %}: {{ r.reservation_code }}</span>
-                                </li>
-                            {% else %}
-                                <li class="list-group-item mb-2">
-                                    <strong>{% trans "Vuelo" %} {{ r.flight.id }}</strong>: {{ r.flight.origin }} → {{ r.flight.destination }}<br>
-                                    <span class="text-muted">{{ r.flight.departure_time|date:'d/m/Y H:i' }} - {{ r.flight.arrival_time|date:'d/m/Y H:i' }}</span><br>
-                                    <span class="badge bg-info text-dark">{{ r.flight.get_status_display }}</span>
-                                    <span class="badge bg-success">${{ r.price }}</span>
-                                    <span class="badge bg-secondary">{% trans "Asiento" %}: {{ r.seat.number }}</span>
-                                    <span class="badge bg-dark text-muted">{% trans "Código" %}: {{ r.reservation_code }}</span>
-                                    <form method="post" action="{% url 'delete_reservation' r.id %}" class="d-inline-block float-end ms-2">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-sm btn-danger">{% trans "Eliminar" %}</button>
-                                    </form>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-                        </ul>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>{% trans "Vuelo" %}</th>
+                                    <th>{% trans "Ruta" %}</th>
+                                    <th>{% trans "Fecha" %}</th>
+                                    <th>{% trans "Estado" %}</th>
+                                    <th>{% trans "Precio" %}</th>
+                                    <th>{% trans "Detalles" %}</th>
+                                    <th>{% trans "Acciones" %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for r in reservations %}
+                                {% if r.flight.departure_time < now %}
+                                <tr class="text-muted bg-light">
+                                    <td>#{{ r.flight.id }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span>{{ r.flight.origin }}</span>
+                                            <i class="fas fa-arrow-right mx-2 text-muted"></i>
+                                            <span>{{ r.flight.destination }}</span>
+                                        </div>
+                                    </td>
+                                    <td>{{ r.flight.departure_time|date:'d/m/Y H:i' }}</td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-secondary">{% trans "Caducado" %}</span>
+                                    </td>
+                                    <td>${{ r.price }}</td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-light text-dark border">{% trans "Asiento" %}: {{ r.seat.number }}</span>
+                                        <span class="badge rounded-pill bg-light text-dark border">{% trans "Código" %}: {{ r.reservation_code }}</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" disabled>
+                                            <i class="fas fa-ban me-1"></i> {% trans "Expirado" %}
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td>#{{ r.flight.id }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span>{{ r.flight.origin }}</span>
+                                            <i class="fas fa-arrow-right mx-2 text-primary"></i>
+                                            <span>{{ r.flight.destination }}</span>
+                                        </div>
+                                    </td>
+                                    <td>{{ r.flight.departure_time|date:'d/m/Y H:i' }}</td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-info text-dark">{{ r.flight.get_status_display }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="fw-bold text-success">${{ r.price }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-light text-dark border">{% trans "Asiento" %}: {{ r.seat.number }}</span>
+                                        <span class="badge rounded-pill bg-light text-dark border">{% trans "Código" %}: {{ r.reservation_code }}</span>
+                                    </td>
+                                    <td>
+                                        <form method="post" action="{% url 'delete_reservation' r.id %}" class="d-inline-block">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">
+                                                <i class="fas fa-trash-alt me-1"></i> {% trans "Cancelar" %}
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                     {% else %}
-                        <p class="text-danger mb-0">{% trans "No tienes reservas de vuelos." %}</p>
+                    <div class="text-center py-5">
+                        <i class="fas fa-plane-slash fa-4x text-muted mb-3"></i>
+                        <h5 class="text-muted">{% trans "No tienes reservas de vuelos." %}</h5>
+                        <p class="text-muted">{% trans "Explora nuestros destinos y haz tu primera reserva." %}</p>
+                    </div>
                     {% endif %}
                     <div class="mt-4 text-center">
-                        <a href="/" class="btn btn-outline-primary">{% trans "Volver al inicio" %}</a>
+                        <a href="/" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                            <i class="fas fa-search me-2"></i> {% trans "Buscar Vuelos" %}
+                        </a>
                     </div>
                 </div>
             </div>

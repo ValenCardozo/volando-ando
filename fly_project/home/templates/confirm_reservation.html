@@ -7,21 +7,90 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card border-success shadow-sm">
-                <div class="card-header bg-success text-white">
-                    <h3 class="mb-0">{% trans "¡Reserva realizada con éxito!" %}</h3>
+            <div class="card border-0 shadow-sm rounded-lg overflow-hidden">
+                <div class="card-header bg-success text-white py-3">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle fa-2x me-3"></i>
+                        <h3 class="mb-0 fw-bold">{% trans "¡Reserva realizada con éxito!" %}</h3>
+                    </div>
                 </div>
-                <div class="card-body text-center">
-                    <p class="lead">{% trans "Tu reserva ha sido confirmada." %}</p>
-                    <ul class="list-group mb-4">
-                        <li class="list-group-item"><strong>{% trans "Vuelo" %}:</strong> {{ reservation.flight.origin }} → {{ reservation.flight.destination }}</li>
-                        <li class="list-group-item"><strong>{% trans "Fecha y hora de salida" %}:</strong> {{ reservation.flight.departure_time|date:'d/m/Y H:i' }}</li>
-                        <li class="list-group-item"><strong>{% trans "Asiento" %}:</strong> {{ reservation.seat.number }}</li>
-                        <li class="list-group-item"><strong>{% trans "Código de reserva" %}:</strong> {{ reservation.reservation_code }}</li>
-                        <li class="list-group-item"><strong>{% trans "Precio" %}:</strong> ${{ reservation.price }}</li>
-                    </ul>
-                    <a href="{% url 'my_flights' %}" class="btn btn-primary">{% trans "Ver Mis Vuelos" %}</a>
-                    <a href="/" class="btn btn-outline-primary ms-2">{% trans "Volver al inicio" %}</a>
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="mb-3">
+                            <span class="fa-stack fa-3x">
+                                <i class="fas fa-circle fa-stack-2x text-success opacity-25"></i>
+                                <i class="fas fa-plane fa-stack-1x text-success"></i>
+                            </span>
+                        </div>
+                        <h4 class="mb-3">{% trans "Tu reserva ha sido confirmada" %}</h4>
+                        <p class="text-muted">{% trans "Guarda el código de reserva para futuras referencias" %}</p>
+                    </div>
+                    
+                    <div class="card border-0 shadow-sm rounded-lg mb-4">
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle bg-light p-2 me-3">
+                                            <i class="fas fa-map-marker-alt text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-0">{% trans "Ruta" %}</h6>
+                                            <p class="mb-0 fw-bold">{{ reservation.flight.origin }} → {{ reservation.flight.destination }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle bg-light p-2 me-3">
+                                            <i class="far fa-calendar-alt text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-0">{% trans "Fecha y hora" %}</h6>
+                                            <p class="mb-0 fw-bold">{{ reservation.flight.departure_time|date:'d/m/Y H:i' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle bg-light p-2 me-3">
+                                            <i class="fas fa-chair text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-0">{% trans "Asiento" %}</h6>
+                                            <p class="mb-0 fw-bold">{{ reservation.seat.number }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle bg-light p-2 me-3">
+                                            <i class="fas fa-tag text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted mb-0">{% trans "Precio" %}</h6>
+                                            <p class="mb-0 fw-bold text-success">${{ reservation.price }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <div class="p-3 bg-light rounded-lg text-center">
+                                        <h6 class="text-muted mb-1">{% trans "Código de reserva" %}</h6>
+                                        <h4 class="mb-0 fw-bold">{{ reservation.reservation_code }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{% url 'my_flights' %}" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                            <i class="fas fa-ticket-alt me-2"></i>{% trans "Ver Mis Vuelos" %}
+                        </a>
+                        <a href="/" class="btn btn-outline-primary rounded-pill px-4">
+                            <i class="fas fa-home me-2"></i>{% trans "Volver al inicio" %}
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
