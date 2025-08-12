@@ -53,7 +53,8 @@ Sigue estos pasos para configurar el entorno de desarrollo local.
 Para que los demás integrantes puedan cargar los datos de ejemplo (seed) en la base de datos, simplemente ejecuten el siguiente comando desde la raíz del proyecto:
 
 ```bash
-python3 fly_project/manage.py dbshell < seeds/seed_arg_airline.sql
+python3 fly_project/manage.py dbshell < fly_project/seeds/seed_arg_airline.sql
+python3 fly_project/manage.py dbshell < fly_project/seeds/seed_destinations.sql
 ```
 
-Esto insertará los datos del archivo `seeds/seed_arg_airline.sql` en la base de datos SQLite utilizada por el proyecto.
+Esto insertará los datos del archivo `seeds/seed_arg_airline.sql` y `seed_destinations.sql` en la base de datos SQLite utilizada por el proyecto.
