@@ -103,3 +103,16 @@ class Ticket(models.Model):
 
     def __str__(self):
         return f"Ticket {self.barcode} - Reservation {self.reservation.reservation_code}"
+
+class Destination(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class DestinationImage(models.Model):
+    destination = models.ForeignKey(Destination, on_delete=models.CASCADE, related_name='images')
+    image_url = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.destination.name} - {self.image_url}"

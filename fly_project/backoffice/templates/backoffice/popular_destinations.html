@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
 {% load i18n %}
 
 {% block title %}{% trans "Destinos Populares" %}{% endblock %}
@@ -11,10 +10,12 @@
         {% for dest in destinations %}
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm h-100 border-0 rounded-lg">
-                <img src="{% static dest.image %}" class="card-img-top" alt="{{ dest.name }}">
+                <div style="height: 220px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
+                    <img src="{{ dest.image }}" class="card-img-top" alt="{{ dest.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
                 <div class="card-body text-center">
                     <h4 class="card-title">{{ dest.name }}</h4>
-                    <p class="card-text text-muted">{{ dest.description }}</p>
+                    <p class="card-text text-muted">{{ dest.description }} </p>
                     <a href="#" class="btn btn-primary rounded-pill px-4">{% trans "Reservar ahora" %}</a>
                 </div>
             </div>

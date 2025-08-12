@@ -180,57 +180,23 @@
             <h3 class="text-primary">{% trans "Destinos Populares" %}</h3>
             <p class="text-muted">{% trans "Explora nuestros destinos más reservados" %}</p>
         </div>
-        
-        <!-- Destination Card 1 -->
+        {% for dest in popular_destinations %}
         <div class="col-md-4 mb-4">
             <div class="card border-0 shadow-sm rounded-lg overflow-hidden h-100">
                 <div class="bg-image hover-overlay" style="height: 200px;">
-                    <img src="{% static 'img/destinations/buenos-aires.jpg' %}" class="img-fluid w-100 h-100" style="object-fit: cover;" alt="Buenos Aires">
+                    <img src="{{ dest.image }}" class="img-fluid w-100 h-100" style="object-fit: cover;" alt="{{ dest.name }}">
                     <div class="mask" style="background-color: rgba(0, 0, 0, 0.3)"></div>
                 </div>
                 <div class="card-body text-center">
-                    <h5 class="card-title">Buenos Aires</h5>
-                    <p class="card-text text-muted">{% trans "Experimenta la vibrante cultura y arquitectura" %}</p>
+                    <h5 class="card-title">{{ dest.name }}</h5>
+                    <p class="card-text text-muted">{{ dest.description }}</p>
                     <a href="#" class="btn btn-outline-primary btn-sm rounded-pill px-4">
                         {% trans "Explorar" %} <i class="fas fa-arrow-right ml-1"></i>
                     </a>
                 </div>
             </div>
         </div>
-        
-        <!-- Destination Card 2 -->
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 shadow-sm rounded-lg overflow-hidden h-100">
-                <div class="bg-image hover-overlay" style="height: 200px;">
-                    <img src="{% static 'img/destinations/madrid.jpg' %}" class="img-fluid w-100 h-100" style="object-fit: cover;" alt="Madrid">
-                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.3)"></div>
-                </div>
-                <div class="card-body text-center">
-                    <h5 class="card-title">Madrid</h5>
-                    <p class="card-text text-muted">{% trans "Descubre la capital de España y su rica historia" %}</p>
-                    <a href="#" class="btn btn-outline-primary btn-sm rounded-pill px-4">
-                        {% trans "Explorar" %} <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Destination Card 3 -->
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 shadow-sm rounded-lg overflow-hidden h-100">
-                <div class="bg-image hover-overlay" style="height: 200px;">
-                    <img src="{% static 'img/destinations/bariloche.jpg' %}" class="img-fluid w-100 h-100" style="object-fit: cover;" alt="Bariloche">
-                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.3)"></div>
-                </div>
-                <div class="card-body text-center">
-                    <h5 class="card-title">Bariloche</h5>
-                    <p class="card-text text-muted">{% trans "Disfruta de impresionantes vistas de montañas y lagos" %}</p>
-                    <a href="#" class="btn btn-outline-primary btn-sm rounded-pill px-4">
-                        {% trans "Explorar" %} <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
     
     {% if flights is not None %}
