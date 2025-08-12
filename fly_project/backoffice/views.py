@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView
 from app.models import Airplane, Flight, Seat, Reservation, Ticket, Passenger
 from .forms import AirplaneForm, FlightForm, SeatForm
 import csv
@@ -129,6 +129,30 @@ class FlightDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['reservations'] = Reservation.objects.filter(flight=self.object)
+        return context
+
+class PopularDestinationsView(TemplateView):
+    template_name = "backoffice/popular_destinations.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['destinations'] = [
+            {
+                "name": "Bariloche",
+                "description": "Disfruta de impresionantes vistas de montañas y lagos.",
+                "image": "img/destinations/bariloche.jpg"
+            },
+            {
+                "name": "Madrid",
+                "description": "Descubre la capital de España y su rica historia.",
+                "image": "img/destinations/madrid.jpg"
+            },
+            {
+                "name": "Buenos Aires",
+                "description": "Experimenta la vibrante cultura y arquitectura.",
+                "image": "img/destinations/buenos-aires.jpg"
+            }
+        ]
         return context
 
 # Vistas para Asientos (Seat)

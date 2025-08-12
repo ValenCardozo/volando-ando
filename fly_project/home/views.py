@@ -6,6 +6,7 @@ from django.core.mail import EmailMessage
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.views import View
+from django.views.generic import TemplateView
 from home.forms import LoginForm, RegisterForm, FlightSearchForm
 from home.forms_profile import ProfileForm
 from app.models import Flight, Reservation, Passenger

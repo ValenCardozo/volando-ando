@@ -16,6 +16,7 @@ from home.views import (
 )
 from home.confirm_reservation_views import ConfirmReservationView, FinalizeReservationView
 from home.seat_selection_view import SeatSelectionView, download_ticket
+from backoffice.views import PopularDestinationsView
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -31,6 +32,7 @@ urlpatterns = [
     path('finalize-reservation/<int:flight_id>/', FinalizeReservationView.as_view(), name='finalize_reservation'),
     path('profile/', ProfileView.as_view(), name='profile'),
     path('download-ticket/<int:reservation_id>/', download_ticket, name='download_ticket'),
+    path('popular-destinations/', PopularDestinationsView.as_view(), name='popular_destinations'),
     path('', HomeView.as_view(), name='index'),
     path('i18n/', include('django.conf.urls.i18n')),
 ]
