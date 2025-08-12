@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Perfil{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Editar Perfil</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        <div class="form-group mb-3">
+                            <label for="name">{{ form.name.label }}</label>
+                            {{ form.name }}
+                            {{ form.name.errors }}
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="document_type">{{ form.document_type.label }}</label>
+                            {{ form.document_type }}
+                            {{ form.document_type.errors }}
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="document">{{ form.document.label }}</label>
+                            {{ form.document }}
+                            {{ form.document.errors }}
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="email">{{ form.email.label }}</label>
+                            {{ form.email }}
+                            {{ form.email.errors }}
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="phone">{{ form.phone.label }}</label>
+                            {{ form.phone }}
+                            {{ form.phone.errors }}
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="birth_date">{{ form.birth_date.label }}</label>
+                            {{ form.birth_date }}
+                            {{ form.birth_date.errors }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
