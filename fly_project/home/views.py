@@ -45,6 +45,17 @@ class HomeView(View):
         else:
             form = FlightSearchForm()
         return render(request, 'index.html', {'form': form, 'flights': flights, 'user_reservations': user_reservations})
+    
+    def post(self, request):
+        # Get the flight_id from the form
+        flight_id = request.POST.get('flight_id')
+        if flight_id:
+            # Redirect to seat selection
+            return redirect('seat_selection', flight_id=flight_id)
+        
+        # If no flight_id, redirect to home
+        messages.error(request, "No se seleccionó ningún vuelo.")
+        return redirect('index')
 
 
 class LogoutView(View):

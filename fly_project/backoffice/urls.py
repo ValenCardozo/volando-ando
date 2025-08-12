@@ -20,6 +20,8 @@ urlpatterns = [
     path('flights/<int:pk>/', views.FlightDetailView.as_view(), name='flight_detail'),
     path('flights/<int:pk>/edit/', views.FlightUpdateView.as_view(), name='flight_update'),
     path('flights/<int:pk>/delete/', views.FlightDeleteView.as_view(), name='flight_delete'),
+    path('flights/<int:flight_id>/passengers/', views.flight_passengers, name='flight_passengers'),
+    path('flights/<int:flight_id>/passengers/pdf/', views.flight_passengers_pdf, name='flight_passengers_pdf'),
     
     # Seat URLs
     path('airplanes/<int:airplane_id>/seats/', views.seat_management, name='seat_management'),

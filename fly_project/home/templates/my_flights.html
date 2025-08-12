@@ -1,107 +1,293 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{% trans "Mis Vuelos - Volando Ando" %}{% endblock %}
+{% block title %}{% trans "Mi Historial de Vuelos - Volando Ando" %}{% endblock %}
 
 {% block content %}
 <div class="container py-5">
+    <!-- Sección de estadísticas del pasajero -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="card border-0 shadow-sm rounded-lg">
                 <div class="card-header bg-primary text-white py-3 rounded-top">
                     <div class="d-flex align-items-center">
-                        <i class="fas fa-ticket-alt me-3 fa-2x"></i>
-                        <h3 class="mb-0 fw-bold">{% trans "Mis Reservas de Vuelo" %}</h3>
+                        <i class="fas fa-user-circle me-3 fa-2x"></i>
+                        <h3 class="mb-0 fw-bold">{% trans "Mi Historial de Vuelos" %}</h3>
                     </div>
                 </div>
                 <div class="card-body p-4">
-                    {% if reservations %}
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>{% trans "Vuelo" %}</th>
-                                    <th>{% trans "Ruta" %}</th>
-                                    <th>{% trans "Fecha" %}</th>
-                                    <th>{% trans "Estado" %}</th>
-                                    <th>{% trans "Precio" %}</th>
-                                    <th>{% trans "Detalles" %}</th>
-                                    <th>{% trans "Acciones" %}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for r in reservations %}
-                                {% if r.flight.departure_time < now %}
-                                <tr class="text-muted bg-light">
-                                    <td>#{{ r.flight.id }}</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span>{{ r.flight.origin }}</span>
-                                            <i class="fas fa-arrow-right mx-2 text-muted"></i>
-                                            <span>{{ r.flight.destination }}</span>
+                    <div class="row">
+                        <!-- Información del pasajero -->
+                        <div class="col-md-5 mb-4">
+                            <div class="card h-100 border-0 shadow-sm rounded-lg bg-light">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title mb-3">
+                                        <i class="fas fa-user me-2 text-primary"></i>{% trans "Información del Pasajero" %}
+                                    </h5>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="rounded-circle bg-primary text-white p-3 me-3">
+                                            <span class="h4 mb-0">{{ passenger.name|first|upper }}</span>
                                         </div>
-                                    </td>
-                                    <td>{{ r.flight.departure_time|date:'d/m/Y H:i' }}</td>
-                                    <td>
-                                        <span class="badge rounded-pill bg-secondary">{% trans "Caducado" %}</span>
-                                    </td>
-                                    <td>${{ r.price }}</td>
-                                    <td>
-                                        <span class="badge rounded-pill bg-light text-dark border">{% trans "Asiento" %}: {{ r.seat.number }}</span>
-                                        <span class="badge rounded-pill bg-light text-dark border">{% trans "Código" %}: {{ r.reservation_code }}</span>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" disabled>
-                                            <i class="fas fa-ban me-1"></i> {% trans "Expirado" %}
-                                        </button>
-                                    </td>
-                                </tr>
-                                {% else %}
-                                <tr>
-                                    <td>#{{ r.flight.id }}</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <span>{{ r.flight.origin }}</span>
-                                            <i class="fas fa-arrow-right mx-2 text-primary"></i>
-                                            <span>{{ r.flight.destination }}</span>
+                                        <div>
+                                            <h5 class="mb-1">{{ passenger.name }}</h5>
+                                            <p class="text-muted mb-0"><i class="fas fa-envelope me-1"></i> {{ passenger.email }}</p>
+                                            <p class="text-muted mb-0"><i class="fas fa-id-card me-1"></i> {{ passenger.document_type }}: {{ passenger.document }}</p>
                                         </div>
-                                    </td>
-                                    <td>{{ r.flight.departure_time|date:'d/m/Y H:i' }}</td>
-                                    <td>
-                                        <span class="badge rounded-pill bg-info text-dark">{{ r.flight.get_status_display }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="fw-bold text-success">${{ r.price }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="badge rounded-pill bg-light text-dark border">{% trans "Asiento" %}: {{ r.seat.number }}</span>
-                                        <span class="badge rounded-pill bg-light text-dark border">{% trans "Código" %}: {{ r.reservation_code }}</span>
-                                    </td>
-                                    <td>
-                                        <form method="post" action="{% url 'delete_reservation' r.id %}" class="d-inline-block">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">
-                                                <i class="fas fa-trash-alt me-1"></i> {% trans "Cancelar" %}
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tarjetas de estadísticas -->
+                        <div class="col-md-7 mb-4">
+                            <div class="row g-3">
+                                <!-- Total de vuelos -->
+                                <div class="col-6 col-lg-4">
+                                    <div class="card h-100 border-0 shadow-sm rounded-lg">
+                                        <div class="card-body p-3 text-center">
+                                            <div class="rounded-circle mx-auto bg-primary bg-opacity-10 p-3 mb-2" style="width: 60px; height: 60px;">
+                                                <i class="fas fa-plane text-primary fa-lg"></i>
+                                            </div>
+                                            <h5 class="card-title">{{ stats.total_flights }}</h5>
+                                            <p class="card-text text-muted small">{% trans "Total de vuelos" %}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Vuelos próximos -->
+                                <div class="col-6 col-lg-4">
+                                    <div class="card h-100 border-0 shadow-sm rounded-lg">
+                                        <div class="card-body p-3 text-center">
+                                            <div class="rounded-circle mx-auto bg-success bg-opacity-10 p-3 mb-2" style="width: 60px; height: 60px;">
+                                                <i class="fas fa-calendar-alt text-success fa-lg"></i>
+                                            </div>
+                                            <h5 class="card-title">{{ stats.upcoming_flights }}</h5>
+                                            <p class="card-text text-muted small">{% trans "Vuelos próximos" %}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Total gastado -->
+                                <div class="col-6 col-lg-4">
+                                    <div class="card h-100 border-0 shadow-sm rounded-lg">
+                                        <div class="card-body p-3 text-center">
+                                            <div class="rounded-circle mx-auto bg-info bg-opacity-10 p-3 mb-2" style="width: 60px; height: 60px;">
+                                                <i class="fas fa-dollar-sign text-info fa-lg"></i>
+                                            </div>
+                                            <h5 class="card-title">${{ stats.total_spent|floatformat:2 }}</h5>
+                                            <p class="card-text text-muted small">{% trans "Total gastado" %}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Destino más visitado -->
+                                {% if stats.most_visited %}
+                                <div class="col-6 col-lg-6">
+                                    <div class="card h-100 border-0 shadow-sm rounded-lg">
+                                        <div class="card-body p-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3" style="width: 60px; height: 60px;">
+                                                    <i class="fas fa-map-marker-alt text-warning fa-lg"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted small mb-0">{% trans "Destino más visitado" %}</p>
+                                                    <h6 class="card-title mb-0">{{ stats.most_visited.flight__destination }}</h6>
+                                                    <small class="text-muted">{{ stats.most_visited.count }} {% trans "veces" %}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 {% endif %}
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                                
+                                <!-- Ruta más frecuente -->
+                                {% if most_frequent_route %}
+                                <div class="col-6 col-lg-6">
+                                    <div class="card h-100 border-0 shadow-sm rounded-lg">
+                                        <div class="card-body p-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-danger bg-opacity-10 p-3 me-3" style="width: 60px; height: 60px;">
+                                                    <i class="fas fa-route text-danger fa-lg"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted small mb-0">{% trans "Ruta más frecuente" %}</p>
+                                                    <h6 class="card-title mb-0">{{ most_frequent_route.flight__origin }} → {{ most_frequent_route.flight__destination }}</h6>
+                                                    <small class="text-muted">{{ most_frequent_route.count }} {% trans "veces" %}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-                    {% else %}
-                    <div class="text-center py-5">
-                        <i class="fas fa-plane-slash fa-4x text-muted mb-3"></i>
-                        <h5 class="text-muted">{% trans "No tienes reservas de vuelos." %}</h5>
-                        <p class="text-muted">{% trans "Explora nuestros destinos y haz tu primera reserva." %}</p>
-                    </div>
-                    {% endif %}
-                    <div class="mt-4 text-center">
-                        <a href="/" class="btn btn-primary rounded-pill px-4 shadow-sm">
-                            <i class="fas fa-search me-2"></i> {% trans "Buscar Vuelos" %}
-                        </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pestañas para próximos vuelos e historial -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-lg">
+                <div class="card-header bg-white p-0">
+                    <ul class="nav nav-tabs" id="flightTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming" type="button" role="tab" aria-controls="upcoming" aria-selected="true">
+                                <i class="fas fa-calendar-alt me-2"></i>{% trans "Próximos Vuelos" %} ({{ stats.upcoming_flights }})
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="false">
+                                <i class="fas fa-history me-2"></i>{% trans "Historial de Vuelos" %} ({{ stats.past_flights }})
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body p-4">
+                    <div class="tab-content" id="flightTabsContent">
+                        <!-- Próximos vuelos -->
+                        <div class="tab-pane fade show active" id="upcoming" role="tabpanel" aria-labelledby="upcoming-tab">
+                            {% if upcoming_flights %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>{% trans "Vuelo" %}</th>
+                                            <th>{% trans "Ruta" %}</th>
+                                            <th>{% trans "Fecha" %}</th>
+                                            <th>{% trans "Estado" %}</th>
+                                            <th>{% trans "Precio" %}</th>
+                                            <th>{% trans "Asiento" %}</th>
+                                            <th>{% trans "Boleto" %}</th>
+                                            <th>{% trans "Acciones" %}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for r in upcoming_flights %}
+                                        <tr>
+                                            <td>#{{ r.flight.id }}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <span>{{ r.flight.origin }}</span>
+                                                    <i class="fas fa-arrow-right mx-2 text-primary"></i>
+                                                    <span>{{ r.flight.destination }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex flex-column">
+                                                    <span>{{ r.flight.departure_time|date:'d/m/Y' }}</span>
+                                                    <small class="text-muted">{{ r.flight.departure_time|date:'H:i' }}</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge rounded-pill bg-info text-dark">{{ r.flight.get_status_display }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="fw-bold text-success">${{ r.price }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge rounded-pill bg-light text-dark border">{{ r.seat.number }}</span>
+                                            </td>
+                                            <td>
+                                                {% if r.has_ticket %}
+                                                    <a href="{% url 'download_ticket' r.id %}" class="btn btn-sm btn-outline-primary rounded-pill">
+                                                        <i class="fas fa-download me-1"></i> {% trans "Boleto" %}
+                                                    </a>
+                                                {% else %}
+                                                    <span class="badge rounded-pill bg-warning text-dark">{% trans "Pendiente" %}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <form method="post" action="{% url 'delete_reservation' r.id %}" class="d-inline-block">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">
+                                                        <i class="fas fa-trash-alt me-1"></i> {% trans "Cancelar" %}
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% else %}
+                            <div class="text-center py-5">
+                                <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
+                                <h5 class="text-muted">{% trans "No tienes vuelos próximos" %}</h5>
+                                <p class="text-muted">{% trans "Explora nuestros destinos y haz tu próxima reserva" %}</p>
+                                <a href="/" class="btn btn-primary rounded-pill px-4 mt-2">
+                                    <i class="fas fa-search me-2"></i> {% trans "Buscar Vuelos" %}
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Historial de vuelos -->
+                        <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+                            {% if past_flights %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>{% trans "Vuelo" %}</th>
+                                            <th>{% trans "Ruta" %}</th>
+                                            <th>{% trans "Fecha" %}</th>
+                                            <th>{% trans "Estado" %}</th>
+                                            <th>{% trans "Precio" %}</th>
+                                            <th>{% trans "Asiento" %}</th>
+                                            <th>{% trans "Boleto" %}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for r in past_flights %}
+                                        <tr class="text-muted">
+                                            <td>#{{ r.flight.id }}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <span>{{ r.flight.origin }}</span>
+                                                    <i class="fas fa-arrow-right mx-2 text-muted"></i>
+                                                    <span>{{ r.flight.destination }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex flex-column">
+                                                    <span>{{ r.flight.departure_time|date:'d/m/Y' }}</span>
+                                                    <small class="text-muted">{{ r.flight.departure_time|date:'H:i' }}</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge rounded-pill bg-secondary">{% trans "Completado" %}</span>
+                                            </td>
+                                            <td>
+                                                <span>${{ r.price }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge rounded-pill bg-light text-dark border">{{ r.seat.number }}</span>
+                                            </td>
+                                            <td>
+                                                {% if r.has_ticket %}
+                                                    <a href="{% url 'download_ticket' r.id %}" class="btn btn-sm btn-outline-secondary rounded-pill">
+                                                        <i class="fas fa-download me-1"></i> {% trans "Boleto" %}
+                                                    </a>
+                                                {% else %}
+                                                    <span class="badge rounded-pill bg-secondary">{% trans "No disponible" %}</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% else %}
+                            <div class="text-center py-5">
+                                <i class="fas fa-history fa-4x text-muted mb-3"></i>
+                                <h5 class="text-muted">{% trans "No tienes historial de vuelos" %}</h5>
+                                <p class="text-muted">{% trans "Tus vuelos completados aparecerán aquí" %}</p>
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
