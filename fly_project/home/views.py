@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.views import View
 from home.forms import LoginForm, RegisterForm, FlightSearchForm
-from app.models import Flight, Reservation
+from app.models import Flight, Reservation, Passenger
 from .offers_view import OffersView
 from .buy_offer_view import BuyOfferView
 from .my_flights_view import MyFlightsView
@@ -64,17 +64,24 @@ class RegisterView(View):
     def post(self, request):
         form = RegisterForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data["username"])
             user = User.objects.create_user(
                 username=form.cleaned_data["username"],
                 password=form.cleaned_data['password1'],
                 email=form.cleaned_data['email']
             )
-
+            Passenger.objects.create(
+                name=form.cleaned_data["username"],
+                document=form.cleaned_data["document"],
+                document_type=form.cleaned_data["document_type"],
+                email=form.cleaned_data["email"],
+                phone=form.cleaned_data["phone"],
+                birth_date=form.cleaned_data["birth_date"]
+            )
             messages.success(
                 request,
                 "Usuario registrado correctamente"
             )
+            return redirect('login')
         return render(
             request,
             'accounts/register.html',
