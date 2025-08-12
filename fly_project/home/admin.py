@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app.models import Airplane, Flight, Passenger, Seat, Reservation, Ticket
+from app.models import Airplane, Flight, Passenger, Seat, Reservation, Ticket, Destination, DestinationImage
 
 @admin.register(Airplane)
 class AirplaneAdmin(admin.ModelAdmin):
@@ -57,3 +57,14 @@ class TicketAdmin(admin.ModelAdmin):
         flight = obj.reservation.flight
         return f"{flight.origin} → {flight.destination}"
     get_flight.short_description = 'Flight'
+
+@admin.register(Destination)
+class DestinationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+    search_fields = ('name',)
+
+@admin.register(DestinationImage)
+class DestinationImageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'destination', 'image_url')
+    search_fields = ('image_url',)
+    list_filter = ('destination',)

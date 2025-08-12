@@ -9,12 +9,13 @@ from django.views import View
 from django.views.generic import TemplateView
 from home.forms import LoginForm, RegisterForm, FlightSearchForm
 from home.forms_profile import ProfileForm
-from app.models import Flight, Reservation, Passenger
+from app.models import Flight, Reservation, Passenger, Destination, DestinationImage
 from .offers_view import OffersView
 from .buy_offer_view import BuyOfferView
 from .my_flights_view import MyFlightsView
 from .delete_reservation_view import DeleteReservationView
 from .confirm_reservation_views import ConfirmReservationView, FinalizeReservationView
+import random
 
 # Create your views here.
 class HomeView(View):
@@ -22,6 +23,17 @@ class HomeView(View):
         form = FlightSearchForm(request.GET or None)
         flights = None
         user_reservations = []
+        # Obtener 3 destinos aleatorios con imagen
+        all_destinations = list(Destination.objects.all())
+        random_destinations = random.sample(all_destinations, min(3, len(all_destinations)))
+        popular_destinations = []
+        for dest in random_destinations:
+            img = dest.images.first()
+            popular_destinations.append({
+                'name': dest.name,
+                'image': img.image_url if img else '',
+                'description': ''
+            })
         if request.user.is_authenticated and request.GET:
             if form.is_valid():
                 origin = form.cleaned_data['origin']
@@ -45,7 +57,12 @@ class HomeView(View):
                 ).values_list('flight_id', flat=True))
         else:
             form = FlightSearchForm()
-        return render(request, 'index.html', {'form': form, 'flights': flights, 'user_reservations': user_reservations})
+        return render(request, 'index.html', {
+            'form': form,
+            'flights': flights,
+            'user_reservations': user_reservations,
+            'popular_destinations': popular_destinations
+        })
     
     def post(self, request):
         # Get the flight_id from the form
