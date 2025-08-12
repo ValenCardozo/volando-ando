@@ -7,6 +7,7 @@ from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.views import View
 from home.forms import LoginForm, RegisterForm, FlightSearchForm
+from home.forms_profile import ProfileForm
 from app.models import Flight, Reservation, Passenger
 from .offers_view import OffersView
 from .buy_offer_view import BuyOfferView
@@ -122,3 +123,31 @@ class LoginView(View):
             "accounts/login.html",
             {'form': form}
         )
+
+
+class ProfileView(View):
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        try:
+            passenger = Passenger.objects.get(email=request.user.email)
+        except Passenger.DoesNotExist:
+            messages.error(request, "No se encontró el perfil de pasajero.")
+            return redirect('index')
+        form = ProfileForm(instance=passenger)
+        return render(request, 'accounts/profile.html', {'form': form})
+
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        try:
+            passenger = Passenger.objects.get(email=request.user.email)
+        except Passenger.DoesNotExist:
+            messages.error(request, "No se encontró el perfil de pasajero.")
+            return redirect('index')
+        form = ProfileForm(request.POST, instance=passenger)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Perfil actualizado correctamente.")
+            return redirect('profile')
+        return render(request, 'accounts/profile.html', {'form': form})

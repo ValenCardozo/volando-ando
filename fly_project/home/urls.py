@@ -12,6 +12,7 @@ from home.views import (
     DeleteReservationView,
     ConfirmReservationView,
     FinalizeReservationView,
+    ProfileView,
 )
 
 urlpatterns = [
@@ -24,6 +25,7 @@ urlpatterns = [
     path('delete-reservation/<int:reservation_id>/', DeleteReservationView.as_view(), name='delete_reservation'),
     path('confirm-reservation/<int:flight_id>/', ConfirmReservationView.as_view(), name='confirm_reservation_prompt'),
     path('finalize-reservation/<int:flight_id>/', FinalizeReservationView.as_view(), name='finalize_reservation'),
+    path('profile/', ProfileView.as_view(), name='profile'),
     path('', HomeView.as_view(), name='index'),
     path('i18n/', include('django.conf.urls.i18n')),
 ]
