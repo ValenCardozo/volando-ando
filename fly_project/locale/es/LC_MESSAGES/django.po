@@ -1,0 +1,393 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-11 23:29+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
+#: backoffice/templates/backoffice/base_backoffice.html:132
+#: home/templates/base.html:119
+msgid "Idioma"
+msgstr "Idioma"
+
+#: backoffice/templates/backoffice/base_backoffice.html:147
+#: home/templates/base.html:134
+msgid "Cerrar sesión"
+msgstr "Cerrar sesión"
+
+#: home/templates/base.html:106
+msgid "Vuelos"
+msgstr "Vuelos"
+
+#: home/templates/base.html:109
+msgid "Mis vuelos"
+msgstr "Mis vuelos"
+
+#: home/templates/base.html:112 home/templates/base.html:197
+msgid "Ofertas"
+msgstr "Ofertas"
+
+#: home/templates/base.html:142 home/templates/index.html:35
+msgid "Iniciar Sesión"
+msgstr "Iniciar Sesión"
+
+#: home/templates/base.html:147 home/templates/index.html:36
+msgid "Registrarse"
+msgstr "Registrarse"
+
+#: home/templates/base.html:191
+msgid "Tu plataforma para encontrar y reservar los mejores vuelos"
+msgstr "Tu plataforma para encontrar y reservar los mejores vuelos"
+
+#: home/templates/base.html:194
+msgid "Enlaces"
+msgstr "Enlaces"
+
+#: home/templates/base.html:196
+msgid "Inicio"
+msgstr "Inicio"
+
+#: home/templates/base.html:199 home/templates/index.html:58
+msgid "Mis Vuelos"
+msgstr "Mis Vuelos"
+
+#: home/templates/base.html:204
+msgid "Contacto"
+msgstr "Contacto"
+
+#: home/templates/base.html:214
+msgid "Todos los derechos reservados"
+msgstr "Todos los derechos reservados"
+
+#: home/templates/confirm_reservation.html:4
+msgid "Confirmación de Reserva - Volando Ando"
+msgstr "Confirmación de Reserva - Volando Ando"
+
+#: home/templates/confirm_reservation.html:14
+msgid "¡Reserva realizada con éxito!"
+msgstr "¡Reserva realizada con éxito!"
+
+#: home/templates/confirm_reservation.html:25
+msgid "Tu reserva ha sido confirmada"
+msgstr "Tu reserva ha sido confirmada"
+
+#: home/templates/confirm_reservation.html:26
+msgid "Guarda el código de reserva para futuras referencias"
+msgstr "Guarda el código de reserva para futuras referencias"
+
+#: home/templates/confirm_reservation.html:38
+#: home/templates/confirm_reservation_prompt.html:38
+#: home/templates/my_flights.html:24
+msgid "Ruta"
+msgstr "Ruta"
+
+#: home/templates/confirm_reservation.html:49
+#: home/templates/confirm_reservation_prompt.html:49
+msgid "Fecha y hora"
+msgstr "Fecha y hora"
+
+#: home/templates/confirm_reservation.html:60 home/templates/my_flights.html:50
+#: home/templates/my_flights.html:77
+msgid "Asiento"
+msgstr "Asiento"
+
+#: home/templates/confirm_reservation.html:71
+#: home/templates/confirm_reservation_prompt.html:71
+#: home/templates/my_flights.html:27
+msgid "Precio"
+msgstr "Precio"
+
+#: home/templates/confirm_reservation.html:78
+msgid "Código de reserva"
+msgstr "Código de reserva"
+
+#: home/templates/confirm_reservation.html:88 home/templates/index.html:60
+msgid "Ver Mis Vuelos"
+msgstr "Ver Mis Vuelos"
+
+#: home/templates/confirm_reservation.html:91
+msgid "Volver al inicio"
+msgstr "Volver al inicio"
+
+#: home/templates/confirm_reservation_prompt.html:4
+msgid "Confirmar Reserva - Volando Ando"
+msgstr ""
+
+#: home/templates/confirm_reservation_prompt.html:14
+#: home/templates/confirm_reservation_prompt.html:84
+msgid "Confirmar reserva"
+msgstr ""
+
+#: home/templates/confirm_reservation_prompt.html:25
+msgid "¿Deseas reservar el siguiente vuelo?"
+msgstr ""
+
+#: home/templates/confirm_reservation_prompt.html:26
+msgid "Revisa los detalles antes de confirmar"
+msgstr ""
+
+#: home/templates/confirm_reservation_prompt.html:60
+msgid "Asiento sugerido"
+msgstr ""
+
+#: home/templates/confirm_reservation_prompt.html:88
+#: home/templates/my_flights.html:84
+msgid "Cancelar"
+msgstr "Cancelar"
+
+#: home/templates/index.html:6
+msgid "Volando Ando - Reserva tu vuelo"
+msgstr "Volando Ando - Reserva tu vuelo"
+
+#: home/templates/index.html:12
+msgid "Bienvenido a Volando Ando"
+msgstr "Bienvenido a Volando Ando"
+
+#: home/templates/index.html:13
+msgid ""
+"Tu plataforma para encontrar y reservar los mejores vuelos a los precios más "
+"competitivos."
+msgstr "Tu plataforma para encontrar y reservar los mejores vuelos a los precios más competitivos."
+
+#: home/templates/index.html:19
+msgid "¿Qué ofrecemos?"
+msgstr "¿Qué ofrecemos?"
+
+#: home/templates/index.html:21
+msgid "Amplia selección de vuelos nacionales e internacionales"
+msgstr "Amplia selección de vuelos nacionales e internacionales"
+
+#: home/templates/index.html:22
+msgid "Precios competitivos y ofertas exclusivas"
+msgstr "Precios competitivos y ofertas exclusivas"
+
+#: home/templates/index.html:23
+msgid "Reservas rápidas y seguras"
+msgstr "Reservas rápidas y seguras"
+
+#: home/templates/index.html:24
+msgid "Mejor servicio al cliente"
+msgstr "Mejor servicio al cliente"
+
+#: home/templates/index.html:32
+msgid "Comienza ahora mismo"
+msgstr "Comienza ahora mismo"
+
+#: home/templates/index.html:33
+msgid ""
+"Crea una cuenta o inicia sesión para acceder a todas las funcionalidades:"
+msgstr "Crea una cuenta o inicia sesión para acceder a todas las funcionalidades:"
+
+#: home/templates/index.html:47
+msgid "¡Hola"
+msgstr "¡Hola"
+
+#: home/templates/index.html:48
+msgid "¿A dónde te gustaría viajar hoy?"
+msgstr "¿A dónde te gustaría viajar hoy?"
+
+#: home/templates/index.html:59
+msgid "Accede a tus reservas y tickets"
+msgstr "Accede a tus reservas y tickets"
+
+#: home/templates/index.html:68 home/templates/index.html:180
+msgid "Destinos Populares"
+msgstr "Destinos Populares"
+
+#: home/templates/index.html:69
+msgid "Descubre nuevos lugares para visitar"
+msgstr "Descubre nuevos lugares para visitar"
+
+#: home/templates/index.html:70
+msgid "Explorar Destinos"
+msgstr "Explorar Destinos"
+
+#: home/templates/index.html:78 home/templates/offers.html:17
+msgid "Ofertas Especiales"
+msgstr "Ofertas Especiales"
+
+#: home/templates/index.html:79
+msgid "No te pierdas nuestras mejores promociones"
+msgstr "No te pierdas nuestras mejores promociones"
+
+#: home/templates/index.html:80
+msgid "Ver Ofertas"
+msgstr "Ver Ofertas"
+
+#: home/templates/index.html:94
+msgid "Encuentra Tu Vuelo Perfecto"
+msgstr "Encuentra Tu Vuelo Perfecto"
+
+#: home/templates/index.html:95
+msgid "Descubre destinos increíbles a los mejores precios"
+msgstr "Descubre destinos increíbles a los mejores precios"
+
+#: home/templates/index.html:106
+msgid "Origen"
+msgstr "Origen"
+
+#: home/templates/index.html:114
+msgid "Destino"
+msgstr "Destino"
+
+#: home/templates/index.html:122
+msgid "Tipo de Viaje"
+msgstr "Tipo de Viaje"
+
+#: home/templates/index.html:126
+msgid "Ida y Vuelta"
+msgstr "Ida y Vuelta"
+
+#: home/templates/index.html:129
+msgid "Solo Ida"
+msgstr "Solo Ida"
+
+#: home/templates/index.html:137
+msgid "Fecha de Ida"
+msgstr "Fecha de Ida"
+
+#: home/templates/index.html:144
+msgid "Fecha de Vuelta"
+msgstr "Fecha de Vuelta"
+
+#: home/templates/index.html:152
+msgid "Pasajeros"
+msgstr "Pasajeros"
+
+#: home/templates/index.html:160
+msgid "Clase"
+msgstr "Clase"
+
+#: home/templates/index.html:168 home/templates/my_flights.html:103
+msgid "Buscar Vuelos"
+msgstr "Buscar Vuelos"
+
+#: home/templates/index.html:181
+msgid "Explora nuestros destinos más reservados"
+msgstr "Explora nuestros destinos más reservados"
+
+#: home/templates/index.html:193
+msgid "Experimenta la vibrante cultura y arquitectura"
+msgstr "Experimenta la vibrante cultura y arquitectura"
+
+#: home/templates/index.html:195 home/templates/index.html:212
+#: home/templates/index.html:229
+msgid "Explorar"
+msgstr "Explorar"
+
+#: home/templates/index.html:210
+msgid "Descubre la capital de España y su rica historia"
+msgstr "Descubre la capital de España y su rica historia"
+
+#: home/templates/index.html:227
+msgid "Disfruta de impresionantes vistas de montañas y lagos"
+msgstr "Disfruta de impresionantes vistas de montañas y lagos"
+
+#: home/templates/index.html:241
+msgid "Resultados de la búsqueda"
+msgstr "Resultados de la búsqueda"
+
+#: home/templates/index.html:255 home/templates/my_flights.html:23
+msgid "Vuelo"
+msgstr "Vuelo"
+
+#: home/templates/index.html:269 home/templates/offers.html:60
+msgid "Ya reservado"
+msgstr "Ya reservado"
+
+#: home/templates/index.html:273
+msgid "Reservar"
+msgstr "Reservar"
+
+#: home/templates/index.html:277
+msgid "Inicia sesión para reservar"
+msgstr "Inicia sesión para reservar"
+
+#: home/templates/index.html:287
+msgid "No se encontraron vuelos para los criterios seleccionados."
+msgstr "No se encontraron vuelos para los criterios seleccionados."
+
+#: home/templates/my_flights.html:4
+msgid "Mis Vuelos - Volando Ando"
+msgstr ""
+
+#: home/templates/my_flights.html:14
+msgid "Mis Reservas de Vuelo"
+msgstr "Mis Reservas de Vuelo"
+
+#: home/templates/my_flights.html:25
+msgid "Fecha"
+msgstr "Fecha"
+
+#: home/templates/my_flights.html:26
+msgid "Estado"
+msgstr "Estado"
+
+#: home/templates/my_flights.html:28
+msgid "Detalles"
+msgstr "Detalles"
+
+#: home/templates/my_flights.html:29
+msgid "Acciones"
+msgstr "Acciones"
+
+#: home/templates/my_flights.html:46
+msgid "Caducado"
+msgstr "Caducado"
+
+#: home/templates/my_flights.html:51 home/templates/my_flights.html:78
+msgid "Código"
+msgstr "Código"
+
+#: home/templates/my_flights.html:55
+msgid "Expirado"
+msgstr "Expirado"
+
+#: home/templates/my_flights.html:97
+msgid "No tienes reservas de vuelos."
+msgstr "No tienes reservas de vuelos."
+
+#: home/templates/my_flights.html:98
+msgid "Explora nuestros destinos y haz tu primera reserva."
+msgstr "Explora nuestros destinos y haz tu primera reserva."
+
+#: home/templates/offers.html:4
+msgid "Ofertas de Vuelos - Volando Ando"
+msgstr "Ofertas de Vuelos - Volando Ando"
+
+#: home/templates/offers.html:18
+msgid "Encuentra los mejores precios para volar en los próximos 3 meses"
+msgstr "Encuentra los mejores precios para volar en los próximos 3 meses"
+
+#: home/templates/offers.html:68
+msgid "Comprar"
+msgstr "Comprar"
+
+#: home/templates/offers.html:76
+msgid "Inicia sesión para comprar"
+msgstr "Inicia sesión para comprar"
+
+#: home/templates/offers.html:88
+msgid "No hay ofertas disponibles para los próximos 3 meses."
+msgstr "No hay ofertas disponibles para los próximos 3 meses."
+
+#: home/templates/offers.html:89
+msgid "Revisa más tarde o busca vuelos en nuestra página principal."
+msgstr "Revisa más tarde o busca vuelos en nuestra página principal."
+
+#: home/templates/offers.html:94
+msgid "Buscar Más Vuelos"
+msgstr "Buscar Más Vuelos"

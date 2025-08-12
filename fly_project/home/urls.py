@@ -1,4 +1,5 @@
-from django.urls import path
+from django.conf.urls.i18n import i18n_patterns
+from django.urls import path, include
 
 from home.views import (
     HomeView,
@@ -9,6 +10,9 @@ from home.views import (
     BuyOfferView,
     MyFlightsView,
     DeleteReservationView,
+    ConfirmReservationView,
+    FinalizeReservationView,
+    ProfileView,
 )
 from home.confirm_reservation_views import ConfirmReservationView, FinalizeReservationView
 from home.seat_selection_view import SeatSelectionView, download_ticket
@@ -25,6 +29,8 @@ urlpatterns = [
     path('confirm-reservation/<int:flight_id>/<int:seat_id>/', ConfirmReservationView.as_view(), name='confirm_reservation'),
     path('seat-selection/<int:flight_id>/', SeatSelectionView.as_view(), name='seat_selection'),
     path('finalize-reservation/<int:flight_id>/', FinalizeReservationView.as_view(), name='finalize_reservation'),
+    path('profile/', ProfileView.as_view(), name='profile'),
     path('download-ticket/<int:reservation_id>/', download_ticket, name='download_ticket'),
     path('', HomeView.as_view(), name='index'),
+    path('i18n/', include('django.conf.urls.i18n')),
 ]

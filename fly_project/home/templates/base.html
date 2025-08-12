@@ -130,6 +130,12 @@
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
+                                    <a class="dropdown-item" href="{% url 'profile' %}">
+                                        <i class="fas fa-user-edit me-1"></i> {% trans "Editar perfil" %}
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
                                     <a class="dropdown-item text-danger" href="{% url 'logout' %}">
                                         <i class="fas fa-sign-out-alt me-1"></i> {% trans "Cerrar sesión" %}
                                     </a>
