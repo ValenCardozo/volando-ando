@@ -1,0 +1,314 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+B{% load seat_template_tags %}
+
+{% block title %}{% trans "Selección de Asiento - Volando Ando" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm rounded-lg overflow-hidden">
+                <div class="card-header bg-primary text-white py-3">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-chair fa-2x me-3"></i>
+                        <h3 class="mb-0 fw-bold">{% trans "Selección de Asiento" %}</h3>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Flight info card -->
+                    <div class="card border-0 shadow-sm rounded-lg mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <h5 class="border-bottom pb-2 mb-3">{% trans "Información del Vuelo" %}</h5>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-light p-3 me-3">
+                                                    <i class="fas fa-plane-departure text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="text-muted mb-0">{% trans "Origen" %}</h6>
+                                                    <p class="fw-bold mb-0">{{ flight.origin }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-light p-3 me-3">
+                                                    <i class="fas fa-plane-arrival text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="text-muted mb-0">{% trans "Destino" %}</h6>
+                                                    <p class="fw-bold mb-0">{{ flight.destination }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-light p-3 me-3">
+                                                    <i class="far fa-calendar-alt text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="text-muted mb-0">{% trans "Fecha y Hora de Salida" %}</h6>
+                                                    <p class="fw-bold mb-0">{{ flight.departure_time|date:"d/m/Y H:i" }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-light p-3 me-3">
+                                                    <i class="fas fa-plane text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="text-muted mb-0">{% trans "Avión" %}</h6>
+                                                    <p class="fw-bold mb-0">{{ flight.airplane.model }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seat selection legend -->
+                    <div class="mb-4">
+                        <h5 class="mb-3">{% trans "Leyenda de Asientos" %}</h5>
+                        <div class="d-flex flex-wrap align-items-center mb-3">
+                            <div class="me-4 mb-2 d-flex align-items-center">
+                                <div class="seat-icon available me-2"></div>
+                                <span>{% trans "Disponible" %}</span>
+                            </div>
+                            <div class="me-4 mb-2 d-flex align-items-center">
+                                <div class="seat-icon reserved me-2"></div>
+                                <span>{% trans "Reservado" %}</span>
+                            </div>
+                            <div class="me-4 mb-2 d-flex align-items-center">
+                                <div class="seat-icon occupied me-2"></div>
+                                <span>{% trans "Ocupado" %}</span>
+                            </div>
+                            {% if user_seat %}
+                            <div class="me-4 mb-2 d-flex align-items-center">
+                                <div class="seat-icon selected me-2"></div>
+                                <span>{% trans "Tu asiento" %} ({{ user_seat.number }})</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex flex-wrap align-items-center">
+                            <div class="me-4 mb-2 d-flex align-items-center">
+                                <div class="seat-icon economy me-2"></div>
+                                <span>{% trans "Económico" %} (${{ prices.economy }})</span>
+                            </div>
+                            <div class="me-4 mb-2 d-flex align-items-center">
+                                <div class="seat-icon premium me-2"></div>
+                                <span>{% trans "Premium" %} (${{ prices.premium }})</span>
+                            </div>
+                            <div class="me-4 mb-2 d-flex align-items-center">
+                                <div class="seat-icon business me-2"></div>
+                                <span>{% trans "Business" %} (${{ prices.business }})</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seat map -->
+                    <h5 class="mb-3">{% trans "Selecciona tu asiento" %}</h5>
+                    <div class="card shadow-sm border-0 mb-4">
+                        <div class="card-body">
+                            <div class="text-center mb-4">
+                                <div class="airplane-front p-2 bg-light rounded-pill d-inline-block px-5 mb-3">
+                                    <i class="fas fa-plane-departure me-2"></i>{% trans "Frente del avión" %}
+                                </div>
+                            </div>
+                            
+                            <div class="seat-map">
+                                <div class="aisle mb-2 text-center">
+                                    {% for col in columns %}
+                                    <div class="seat-col">{{ col }}</div>
+                                    {% endfor %}
+                                </div>
+                                
+                                {% for row in rows %}
+                                <div class="seat-row d-flex justify-content-center align-items-center mb-2">
+                                    <div class="row-number me-2">{{ row }}</div>
+                                    {% for col in columns %}
+                                    {% with current_seat=seat_map|get_item:row|get_item:col %}
+                                    <div class="seat-wrapper">
+                                        {% if current_seat %}
+                                        <form method="post" action="{% url 'seat_selection' flight.id %}" class="seat-form">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="seat_id" value="{{ current_seat.id }}">
+                                            <button type="submit" 
+                                                class="seat-btn {% if current_seat.status == 'available' %}available{% elif current_seat.status == 'reserved' %}reserved{% else %}occupied{% endif %} 
+                                                       {% if current_seat.type == 'economy' %}economy{% elif current_seat.type == 'premium' %}premium{% else %}business{% endif %}
+                                                       {% if user_seat and user_seat.id == current_seat.id %}selected{% endif %}"
+                                                {% if current_seat.status != 'available' and not user_seat or user_seat and user_seat.id != current_seat.id %}disabled{% endif %}
+                                                title="{{ current_seat.number }} - {{ current_seat.get_type_display }} 
+                                                    {% if current_seat.type == 'economy' %}(${{ prices.economy }})
+                                                    {% elif current_seat.type == 'premium' %}(${{ prices.premium }})
+                                                    {% elif current_seat.type == 'business' %}(${{ prices.business }}){% endif %}">
+                                                {{ current_seat.number }}
+                                            </button>
+                                        </form>
+                                        {% else %}
+                                        <div class="empty-seat"></div>
+                                        {% endif %}
+                                    </div>
+                                    {% endwith %}
+                                    {% endfor %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <a href="{% url 'index' %}" class="btn btn-outline-secondary rounded-pill px-4">
+                            <i class="fas fa-arrow-left me-2"></i>{% trans "Volver a la búsqueda" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .seat-map {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .seat-row {
+        display: flex;
+    }
+    
+    .row-number {
+        width: 30px;
+        text-align: center;
+        font-weight: bold;
+    }
+    
+    .seat-col {
+        width: 50px;
+        display: inline-block;
+        text-align: center;
+        font-weight: bold;
+    }
+    
+    .seat-wrapper {
+        width: 50px;
+        height: 50px;
+        padding: 5px;
+    }
+    
+    .seat-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 6px 6px 2px 2px;
+        border: 1px solid #ccc;
+        background-color: #e9e9e9;
+        cursor: pointer;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .seat-btn:hover:not(:disabled) {
+        transform: scale(1.1);
+    }
+    
+    .seat-btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    
+    .seat-btn.available {
+        background-color: #28a745;
+        color: white;
+        border-color: #28a745;
+    }
+    
+    .seat-btn.reserved {
+        background-color: #ffc107;
+        color: black;
+        border-color: #ffc107;
+    }
+    
+    .seat-btn.occupied {
+        background-color: #dc3545;
+        color: white;
+        border-color: #dc3545;
+    }
+    
+    .seat-btn.economy {
+        border-top: 3px solid #007bff;
+    }
+    
+    .seat-btn.premium {
+        border-top: 3px solid #17a2b8;
+    }
+    
+    .seat-btn.business {
+        border-top: 3px solid #28a745;
+    }
+    
+    .seat-btn.selected {
+        box-shadow: 0 0 0 3px #007bff;
+        z-index: 1;
+    }
+    
+    .seat-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px 4px 2px 2px;
+    }
+    
+    .seat-icon.available {
+        background-color: #28a745;
+        border: 1px solid #28a745;
+    }
+    
+    .seat-icon.reserved {
+        background-color: #ffc107;
+        border: 1px solid #ffc107;
+    }
+    
+    .seat-icon.occupied {
+        background-color: #dc3545;
+        border: 1px solid #dc3545;
+    }
+    
+    .seat-icon.selected {
+        background-color: #28a745;
+        border: 1px solid #28a745;
+        box-shadow: 0 0 0 2px #007bff;
+    }
+    
+    .seat-icon.economy {
+        border-top: 2px solid #007bff;
+    }
+    
+    .seat-icon.premium {
+        border-top: 2px solid #17a2b8;
+    }
+    
+    .seat-icon.business {
+        border-top: 2px solid #28a745;
+    }
+    
+    .empty-seat {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .airplane-front {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}

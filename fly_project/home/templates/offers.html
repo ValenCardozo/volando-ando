@@ -61,11 +61,12 @@
                                                 </button>
                                             </div>
                                         {% else %}
-                                            <form method="post" action="{% url 'buy_offer' flight.id %}">
+                                            <form method="post" action="{% url 'seat_selection' flight.id %}">
                                                 {% csrf_token %}
+                                                <input type="hidden" name="flight_id" value="{{ flight.id }}">
                                                 <div class="d-grid">
                                                     <button type="submit" class="btn btn-primary rounded-pill">
-                                                        <i class="fas fa-shopping-cart me-2"></i>{% trans "Comprar" %}
+                                                        <i class="fas fa-chair me-2"></i>{% trans "Seleccionar Asiento" %}
                                                     </button>
                                                 </div>
                                             </form>

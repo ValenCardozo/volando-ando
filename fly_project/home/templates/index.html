@@ -268,9 +268,10 @@
                                             {% if flight.id in user_reservations %}
                                                 <span class="badge badge-warning py-2 px-3">{% trans "Ya reservado" %}</span>
                                             {% else %}
-                                                <form method="post" action="{% url 'confirm_reservation_prompt' flight.id %}" class="d-inline-block">
+                                                <form method="post" action="{% url 'seat_selection' flight.id %}" class="d-inline-block">
                                                     {% csrf_token %}
-                                                    <button type="submit" class="btn btn-primary rounded-pill px-4">{% trans "Reservar" %}</button>
+                                                    <input type="hidden" name="flight_id" value="{{ flight.id }}">
+                                                    <button type="submit" class="btn btn-primary rounded-pill px-4">{% trans "Seleccionar Asiento" %}</button>
                                                 </form>
                                             {% endif %}
                                         {% else %}

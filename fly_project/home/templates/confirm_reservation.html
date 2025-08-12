@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load static %}
 
 {% block title %}{% trans "Confirmación de Reserva - Volando Ando" %}{% endblock %}
 
@@ -23,7 +24,7 @@
                             </span>
                         </div>
                         <h4 class="mb-3">{% trans "Tu reserva ha sido confirmada" %}</h4>
-                        <p class="text-muted">{% trans "Guarda el código de reserva para futuras referencias" %}</p>
+                        <p class="text-muted">{% trans "Se ha generado tu boleto electrónico" %}</p>
                     </div>
                     
                     <div class="card border-0 shadow-sm rounded-lg mb-4">
@@ -80,6 +81,21 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ticket Download Section -->
+                    <div class="card border-0 shadow-sm rounded-lg bg-light mb-4">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-ticket-alt fa-3x text-primary mb-3"></i>
+                            <h5 class="mb-3">{% trans "Tu boleto electrónico está listo" %}</h5>
+                            <p class="mb-3">{% trans "Código de boleto:" %} <strong>{{ ticket.barcode }}</strong></p>
+                            <a href="{% url 'download_ticket' reservation.id %}" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                                <i class="fas fa-download me-2"></i>{% trans "Descargar Boleto" %}
+                            </a>
+                            <p class="text-muted small mt-3">
+                                {% trans "Presenta este boleto en el mostrador de embarque o en los quioscos de autoservicio del aeropuerto." %}
+                            </p>
                         </div>
                     </div>
                     
