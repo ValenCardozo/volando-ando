@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load static %}
 
 {% block title %}{% trans "Confirmar Reserva - Volando Ando" %}{% endblock %}
 
@@ -9,10 +10,7 @@
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm rounded-lg overflow-hidden">
                 <div class="card-header bg-primary text-white py-3">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-clipboard-check fa-2x me-3"></i>
-                        <h3 class="mb-0 fw-bold">{% trans "Confirmar reserva" %}</h3>
-                    </div>
+                    <h4 class="mb-0"><i class="fas fa-clipboard-check me-2"></i>{% trans "Confirmar Reserva" %}</h4>
                 </div>
                 <div class="card-body p-4">
                     <div class="text-center mb-4">
@@ -22,54 +20,122 @@
                                 <i class="fas fa-plane fa-stack-1x text-primary"></i>
                             </span>
                         </div>
-                        <h4 class="mb-3">{% trans "¿Deseas reservar el siguiente vuelo?" %}</h4>
-                        <p class="text-muted">{% trans "Revisa los detalles antes de confirmar" %}</p>
+                        <h4 class="mb-3">{% trans "Detalles de tu Vuelo" %}</h4>
                     </div>
                     
-                    <div class="card border-0 bg-light rounded-lg mb-4">
-                        <div class="card-body p-4">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <div class="d-flex align-items-center">
-                                        <div class="rounded-circle bg-white p-2 me-3 shadow-sm">
-                                            <i class="fas fa-map-marker-alt text-primary"></i>
+                    <div class="card border-0 shadow-sm rounded-lg mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <h5 class="border-bottom pb-2 mb-3">{% trans "Información del Vuelo" %}</h5>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-light p-3 me-3">
+                                                    <i class="fas fa-plane-departure text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="text-muted mb-0">{% trans "Origen" %}</h6>
+                                                    <p class="fw-bold mb-0">{{ flight.origin }}</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h6 class="text-muted mb-0">{% trans "Ruta" %}</h6>
-                                            <p class="mb-0 fw-bold">{{ flight.origin }} → {{ flight.destination }}</p>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-light p-3 me-3">
+                                                    <i class="fas fa-plane-arrival text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="text-muted mb-0">{% trans "Destino" %}</h6>
+                                                    <p class="fw-bold mb-0">{{ flight.destination }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-light p-3 me-3">
+                                                    <i class="far fa-calendar-alt text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="text-muted mb-0">{% trans "Fecha y Hora de Salida" %}</h6>
+                                                    <p class="fw-bold mb-0">{{ flight.departure_time|date:"d/m/Y H:i" }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-light p-3 me-3">
+                                                    <i class="far fa-clock text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="text-muted mb-0">{% trans "Duración" %}</h6>
+                                                    <p class="fw-bold mb-0">{{ flight.duration }}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="d-flex align-items-center">
-                                        <div class="rounded-circle bg-white p-2 me-3 shadow-sm">
-                                            <i class="far fa-calendar-alt text-primary"></i>
+                                
+                                <div class="col-md-12 mb-3">
+                                    <h5 class="border-bottom pb-2 mb-3">{% trans "Detalles del Asiento" %}</h5>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-light p-3 me-3">
+                                                    <i class="fas fa-chair text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="text-muted mb-0">{% trans "Número de Asiento" %}</h6>
+                                                    <p class="fw-bold mb-0">{{ seat.number }}</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h6 class="text-muted mb-0">{% trans "Fecha y hora" %}</h6>
-                                            <p class="mb-0 fw-bold">{{ flight.departure_time|date:'d/m/Y H:i' }}</p>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-light p-3 me-3">
+                                                    <i class="fas fa-tag text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="text-muted mb-0">{% trans "Tipo de Asiento" %}</h6>
+                                                    <p class="fw-bold mb-0">
+                                                        {% if seat.type == 'economy' %}
+                                                            {% trans "Económico" %}
+                                                        {% elif seat.type == 'premium' %}
+                                                            {% trans "Premium" %}
+                                                        {% elif seat.type == 'business' %}
+                                                            {% trans "Business" %}
+                                                        {% endif %}
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 mt-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="rounded-circle bg-white p-2 me-3 shadow-sm">
-                                            <i class="fas fa-chair text-primary"></i>
+                                
+                                <div class="col-md-12">
+                                    <h5 class="border-bottom pb-2 mb-3">{% trans "Información de Pago" %}</h5>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-light p-3 me-3">
+                                                    <i class="fas fa-money-bill-wave text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="text-muted mb-0">{% trans "Precio" %}</h6>
+                                                    <p class="fw-bold mb-0 text-success">${{ price }}</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h6 class="text-muted mb-0">{% trans "Asiento sugerido" %}</h6>
-                                            <p class="mb-0 fw-bold">{{ seat.number }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mt-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="rounded-circle bg-white p-2 me-3 shadow-sm">
-                                            <i class="fas fa-tag text-primary"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="text-muted mb-0">{% trans "Precio" %}</h6>
-                                            <p class="mb-0 fw-bold text-success">${{ flight.base_price }}</p>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-light p-3 me-3">
+                                                    <i class="fas fa-credit-card text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="text-muted mb-0">{% trans "Método de Pago" %}</h6>
+                                                    <p class="fw-bold mb-0">{% trans "Tarjeta de Crédito" %}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -77,17 +143,30 @@
                         </div>
                     </div>
                     
-                    <div class="d-flex justify-content-center gap-3 mt-4">
-                        <form method="post" action="{% url 'finalize_reservation' flight.id %}" class="d-inline-block">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-success rounded-pill px-4 py-2 shadow-sm">
-                                <i class="fas fa-check-circle me-2"></i>{% trans "Confirmar reserva" %}
-                            </button>
-                        </form>
-                        <a href="/" class="btn btn-outline-secondary rounded-pill px-4 py-2">
-                            <i class="fas fa-times-circle me-2"></i>{% trans "Cancelar" %}
-                        </a>
+                    <div class="alert alert-info mb-4">
+                        <div class="d-flex">
+                            <div class="me-3">
+                                <i class="fas fa-info-circle fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="alert-heading">{% trans "Información Importante" %}</h5>
+                                <p class="mb-0">{% trans "Al confirmar tu reserva, aceptas nuestros términos y condiciones de servicio. Recuerda que debes presentarte en el aeropuerto al menos 2 horas antes de la hora de salida de tu vuelo." %}</p>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <form method="post" action="{% url 'finalize_reservation' flight.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="seat_id" value="{{ seat.id }}">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <button type="submit" class="btn btn-success px-5">
+                                <i class="fas fa-check-circle me-2"></i>{% trans "Confirmar Reserva" %}
+                            </button>
+                            <a href="{% url 'seat_selection' flight.id %}" class="btn btn-outline-secondary px-4">
+                                <i class="fas fa-chair me-2"></i>{% trans "Cambiar Asiento" %}
+                            </a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

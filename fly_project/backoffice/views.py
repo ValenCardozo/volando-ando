@@ -6,6 +6,11 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from app.models import Airplane, Flight, Seat, Reservation, Ticket, Passenger
 from .forms import AirplaneForm, FlightForm, SeatForm
+import csv
+from django.http import HttpResponse
+from django.utils import timezone
+from datetime import datetime
+import io
 
 def is_superuser(user):
     return user.is_superuser
@@ -246,3 +251,178 @@ def reservation_statistics(request):
     }
     
     return render(request, 'backoffice/reservation_statistics.html', context)
+
+# Vista para listar pasajeros por vuelo
+@superuser_required
+def flight_passengers(request, flight_id):
+    flight = get_object_or_404(Flight, id=flight_id)
+    reservations = Reservation.objects.filter(flight=flight).select_related('passenger', 'seat')
+    
+    # Verificar si se solicita exportar como CSV
+    if 'export' in request.GET:
+        # Crear un archivo CSV en memoria
+        buffer = io.StringIO()
+        writer = csv.writer(buffer)
+        
+        # Escribir encabezados
+        writer.writerow([
+            'ID Reserva', 
+            'Código Reserva', 
+            'Nombre Pasajero', 
+            'Documento', 
+            'Tipo de Documento', 
+            'Email', 
+            'Teléfono', 
+            'Asiento', 
+            'Clase', 
+            'Precio'
+        ])
+        
+        # Escribir datos
+        for r in reservations:
+            writer.writerow([
+                r.id,
+                r.reservation_code,
+                r.passenger.name,
+                r.passenger.document,
+                r.passenger.document_type,
+                r.passenger.email,
+                r.passenger.phone,
+                r.seat.number,
+                r.seat.get_type_display(),
+                r.price
+            ])
+        
+        # Crear respuesta HTTP con el CSV
+        response = HttpResponse(buffer.getvalue(), content_type='text/csv')
+        current_date = timezone.now().strftime('%Y%m%d')
+        filename = f"pasajeros_vuelo_{flight.id}_{current_date}.csv"
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        
+        return response
+        
+    # Estadísticas
+    stats = {
+        'total_passengers': reservations.count(),
+        'economy_class': reservations.filter(seat__type='economy').count(),
+        'premium_class': reservations.filter(seat__type='premium').count(),
+        'business_class': reservations.filter(seat__type='business').count(),
+        'capacity': flight.airplane.capacity,
+        'occupancy_rate': (reservations.count() / flight.airplane.capacity * 100) if flight.airplane.capacity > 0 else 0,
+    }
+    
+    context = {
+        'flight': flight,
+        'reservations': reservations,
+        'stats': stats,
+    }
+    
+    return render(request, 'backoffice/flight_passengers.html', context)
+
+
+# Vista para generar un PDF con el listado de pasajeros
+@superuser_required
+def flight_passengers_pdf(request, flight_id):
+    flight = get_object_or_404(Flight, id=flight_id)
+    reservations = Reservation.objects.filter(flight=flight).select_related('passenger', 'seat')
+    
+    # Importamos aquí para evitar dependencias circulares
+    from reportlab.lib.pagesizes import letter
+    from reportlab.lib import colors
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    
+    # Crear un buffer de bytes para el PDF
+    buffer = io.BytesIO()
+    
+    # Crear el documento PDF
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    
+    # Lista para almacenar los elementos del PDF
+    elements = []
+    
+    # Título
+    title_style = ParagraphStyle(
+        'Title',
+        parent=styles['Heading1'],
+        alignment=1,
+        spaceAfter=12,
+    )
+    elements.append(Paragraph(f"Listado de Pasajeros - Vuelo {flight.id}", title_style))
+    elements.append(Spacer(1, 12))
+    
+    # Detalles del vuelo
+    flight_info = f"""
+    <b>Vuelo:</b> {flight.id}<br/>
+    <b>Origen:</b> {flight.origin}<br/>
+    <b>Destino:</b> {flight.destination}<br/>
+    <b>Fecha de salida:</b> {flight.departure_time.strftime('%d/%m/%Y %H:%M')}<br/>
+    <b>Estado:</b> {flight.get_status_display()}<br/>
+    <b>Avión:</b> {flight.airplane.model} (Capacidad: {flight.airplane.capacity})
+    """
+    elements.append(Paragraph(flight_info, styles['Normal']))
+    elements.append(Spacer(1, 12))
+    
+    # Estadísticas
+    total_passengers = reservations.count()
+    occupancy_rate = (total_passengers / flight.airplane.capacity * 100) if flight.airplane.capacity > 0 else 0
+    
+    stats_info = f"""
+    <b>Total de pasajeros:</b> {total_passengers} de {flight.airplane.capacity} ({occupancy_rate:.1f}%)<br/>
+    <b>Clase Económica:</b> {reservations.filter(seat__type='economy').count()}<br/>
+    <b>Clase Premium:</b> {reservations.filter(seat__type='premium').count()}<br/>
+    <b>Clase Business:</b> {reservations.filter(seat__type='business').count()}
+    """
+    elements.append(Paragraph(stats_info, styles['Normal']))
+    elements.append(Spacer(1, 12))
+    
+    # Tabla de pasajeros
+    data = [
+        ['Asiento', 'Pasajero', 'Documento', 'Email', 'Teléfono', 'Clase']
+    ]
+    
+    for r in reservations:
+        data.append([
+            r.seat.number,
+            r.passenger.name,
+            f"{r.passenger.document_type}: {r.passenger.document}",
+            r.passenger.email,
+            r.passenger.phone,
+            r.seat.get_type_display()
+        ])
+    
+    # Crear tabla
+    table = Table(data, repeatRows=1)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+    
+    elements.append(table)
+    
+    # Agregar pie de página
+    elements.append(Spacer(1, 20))
+    footer_text = f"Reporte generado: {datetime.now().strftime('%d/%m/%Y %H:%M')} - Volando Ando"
+    elements.append(Paragraph(footer_text, styles['Italic']))
+    
+    # Construir PDF
+    doc.build(elements)
+    
+    # Obtener el valor del buffer y crear respuesta HTTP
+    pdf_value = buffer.getvalue()
+    buffer.close()
+    
+    # Crear respuesta con el PDF
+    response = HttpResponse(content_type='application/pdf')
+    current_date = timezone.now().strftime('%Y%m%d')
+    filename = f"pasajeros_vuelo_{flight.id}_{current_date}.pdf"
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    response.write(pdf_value)
+    
+    return response
