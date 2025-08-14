@@ -2,59 +2,77 @@
 
 Este es un proyecto web desarrollado con Django.
 
-## Instalación
+## Instalación y arranque rápido
 
-Sigue estos pasos para configurar el entorno de desarrollo local.
+Sigue estos pasos para configurar y levantar el entorno de desarrollo local de forma automática:
 
 ### Prerrequisitos
 
 - Python 3.x
 - pip (manejador de paquetes de Python)
+- fish o bash (shell compatible)
 
-### Pasos
+### Pasos rápidos
 
-1.  **Clona el repositorio:**
+1. **Clona el repositorio:**
     ```bash
     git clone <URL-DEL-REPOSITORIO>
     cd volando-ando
     ```
 
-2.  **Crea y activa un entorno virtual:**
+2. **Ejecuta el setup automático:**
     ```bash
-    # Para macOS y Linux
-    python3 -m venv .venv
-    source .venv/bin/activate
+    ./setup.sh
+    ```
+    Esto instalará dependencias, aplicará migraciones y cargará los seeders.
 
-    # Para Windows
-    python -m venv .venv
-    .venv\Scripts\activate
+3. **Levanta el servidor:**
+    ```bash
+    ./runserver.sh
+    ```
+    El servidor estará disponible en `http://127.0.0.1:8000/`
+
+---
+
+## Proceso manual (opcional)
+
+Si prefieres hacerlo manualmente:
+
+1.  **Crea y activa un entorno virtual:**
+    ```bash
+    python3 -m venv .venv
+    source .venv/bin/activate  # o source .venv/bin/activate.fish si usas fish
     ```
 
-3.  **Instala las dependencias:**
+2.  **Instala las dependencias:**
     ```bash
     pip install -r requeriments.txt
     ```
 
-4.  **Aplica las migraciones de la base de datos:**
+3.  **Aplica las migraciones de la base de datos:**
     ```bash
     cd fly_project
     python manage.py migrate
     ```
 
+4.  **Carga los datos de seed en la base de datos:**
+    ```bash
+    python manage.py dbshell < seeds/seed_arg_airline.sql
+    python manage.py dbshell < seeds/seed_destinations.sql
+    cd ..
+    ```
+
 5.  **Inicia el servidor de desarrollo:**
     ```bash
+    cd fly_project
     python manage.py runserver
     ```
 
-6.  Abre tu navegador y ve a `http://127.0.0.1:8000/` para ver la aplicación en funcionamiento.
+---
 
-## Cargar datos de seed en la base de datos
-
-Para que los demás integrantes puedan cargar los datos de ejemplo (seed) en la base de datos, simplemente ejecuten el siguiente comando desde la raíz del proyecto:
-
-```bash
-python3 fly_project/manage.py dbshell < fly_project/seeds/seed_arg_airline.sql
-python3 fly_project/manage.py dbshell < fly_project/seeds/seed_destinations.sql
-```
-
-Esto insertará los datos del archivo `seeds/seed_arg_airline.sql` y `seed_destinations.sql` en la base de datos SQLite utilizada por el proyecto.
+## Notas
+- Los scripts `setup.sh` y `runserver.sh` detectan automáticamente si usas fish o bash.
+- Recuerda dar permisos de ejecución a los scripts si es necesario:
+    ```bash
+    chmod +x setup.sh runserver.sh
+    ```
