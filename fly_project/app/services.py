@@ -4,12 +4,34 @@ from .models import Flight, Reservation, Ticket, Seat
 from django.utils import timezone
 
 class ReservaService:
+    def get_or_create_passenger(self, user):
+        """
+        Obtiene o crea un pasajero asociado al usuario
+        """
+        from .models import Passenger
+        try:
+            # Intentar encontrar un pasajero con el email del usuario
+            passenger = Passenger.objects.get(email=user.email)
+        except Passenger.DoesNotExist:
+            # Si no existe, crear uno nuevo con los datos del usuario
+            passenger = Passenger.objects.create(
+                name=f"{user.first_name} {user.last_name}".strip() or user.username,
+                email=user.email,
+                document=f"USR-{user.id}",  # Placeholder, deberías pedir esto al usuario
+                document_type="OTHER",
+                phone="",  # Placeholder, deberías pedir esto al usuario
+                birth_date=timezone.now().date()  # Placeholder, deberías pedir esto al usuario
+            )
+        return passenger
+
     def crear_reserva(self, data, user):
         """
         Crear una nueva reserva con validaciones de negocio
         """
         flight = data['flight']
         seat = data['seat']
+
+        passenger = self.get_or_create_passenger(user)
 
         # Validar que el vuelo está programado
         if flight.status != 'scheduled':
@@ -23,13 +45,15 @@ class ReservaService:
         if seat.status != 'available':
             raise ValidationError("El asiento no está disponible")
 
+        print('si llega aqui')
+        print(passenger, flight, seat)
         # Generar código de reserva único
         reservation_code = str(uuid.uuid4())[:8].upper()
 
         # Crear la reserva
         reserva = Reservation.objects.create(
             flight=flight,
-            passenger=user,
+            passenger=passenger,
             seat=seat,
             status='pending',
             price=flight.base_price,  # Aquí podrías aplicar lógica de precios
@@ -76,10 +100,20 @@ class ReservaService:
         Generar un boleto para una reserva confirmada
         """
         if reserva.status != 'confirmed':
-            raise ValidationError("Solo se pueden generar boletos para reservas confirmadas")
+            raise ValidationError(
+                f"Solo se pueden generar boletos para reservas confirmadas. "
+                f"Estado actual: {reserva.status}"
+            )
 
-        if hasattr(reserva, 'ticket'):
-            raise ValidationError("Ya existe un boleto para esta reserva")
+        # Verificar si ya existe un boleto
+        try:
+            existing_ticket = Ticket.objects.get(reservation=reserva)
+            raise ValidationError(
+                f"Ya existe un boleto para esta reserva. "
+                f"Boleto ID: {existing_ticket.id}, Estado: {existing_ticket.status}"
+            )
+        except Ticket.DoesNotExist:
+            pass
 
         # Generar código de barras único
         barcode = f"TKT-{str(uuid.uuid4())[:12].upper()}"
@@ -101,8 +135,9 @@ class FlightService:
         """
         # Validar que el avión existe y tiene capacidad
         airplane = data.get('airplane')
-        if not airplane or not airplane.capacity > 0:
-            raise ValidationError("Se requiere un avión válido con capacidad disponible")
+        print(airplane, data)
+        if not airplane:
+            raise ValidationError("Se requiere un avión válido")
 
         # Validar fechas
         departure_time = data.get('departure_time')

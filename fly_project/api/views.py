@@ -4,13 +4,14 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.exceptions import ValidationError
 from django_filters.rest_framework import DjangoFilterBackend
 from app.models import Airplane, Seat, Flight, Reservation, Ticket
 from app.services import FlightService, ReservaService
 from .permissions import IsAdminUser
 from .serializers import (
     UserSerializer, AirplaneSerializer, SeatSerializer, VueloSerializer,
-    ReservaSerializer, BoletoSerializer
+    ReservaSerializer, BoletoSerializer, PassengerSerializer
 )
 
 class RegistroPasajeroView(APIView):
@@ -45,8 +46,11 @@ class VueloViewSet(ModelViewSet):
         vuelo = self.get_object()
         reservas = vuelo.reservations.filter(status='confirmed')
         pasajeros = [reserva.passenger for reserva in reservas]
-        serializer = UserSerializer(pasajeros, many=True)
-        return Response(serializer.data)
+        serializer = PassengerSerializer(pasajeros, many=True)
+        return Response({
+            'total_pasajeros': len(pasajeros),
+            'pasajeros': serializer.data
+        })
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -79,7 +83,7 @@ class ReservaViewSet(ModelViewSet):
         self.reserva_service = ReservaService()
 
     def get_queryset(self):
-        return Reservation.objects.filter(passenger=self.request.user)
+        return Reservation.objects.filter(passenger__email=self.request.user.email)
 
     def perform_create(self, serializer):
         return self.reserva_service.crear_reserva(serializer.validated_data, self.request.user)
