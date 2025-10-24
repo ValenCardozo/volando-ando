@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 if [[ "$SHELL" == *"fish"* ]]; then
-    source .venv/bin/activate.fish
+    source env/bin/activate.fish
 else
-    source .venv/bin/activate
+    source env/bin/activate
 fi
 
 # start server
