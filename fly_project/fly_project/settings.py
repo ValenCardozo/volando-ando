@@ -37,15 +37,33 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-        'rest_framework',
+    'rest_framework',
     'rest_framework.authtoken',
-    'drf_yasg',
+    'drf_spectacular',
     'django_filters',
     'home',
     'app',
     'backoffice',
     'api',
 ]
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Volando Ando API',
+    'DESCRIPTION': 'Documentación de la API para el sistema de gestión de aerolínea',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # Configuración para autenticación por Token
+    'SECURITY': [
+        {
+            'Token': {
+                'type': 'apiKey',
+                'name': 'Authorization',
+                'in': 'header',
+                'description': "Token fff4e388f4e04b55ee5248692fd4bc060ccc8dce"
+            }
+        }
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -149,7 +167,10 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
