@@ -70,6 +70,18 @@ Si prefieres hacerlo manualmente:
 
 ---
 
+## Ejecutar todos los tests
+
+Para correr tanto los tests unitarios como los de integración de forma automática, ejecuta:
+
+```bash
+./run_tests.sh
+```
+
+Esto ejecutará todos los tests definidos en el proyecto y mostrará un resumen de los resultados.
+
+---
+
 ## Notas
 - Los scripts `setup.sh` y `runserver.sh` detectan automáticamente si usas fish o bash.
 - Recuerda dar permisos de ejecución a los scripts si es necesario:
