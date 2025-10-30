@@ -45,7 +45,6 @@ class ReservaService:
         if seat.status != 'available':
             raise ValidationError("El asiento no está disponible")
 
-        print('si llega aqui')
         print(passenger, flight, seat)
         # Generar código de reserva único
         reservation_code = str(uuid.uuid4())[:8].upper()
